@@ -10,15 +10,7 @@ const supplierSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    registrationNumber: {
-      type: String,
-      required: true,
-    },
     gstNumber: {
-      type: String,
-      required: true,
-    },
-    contactPerson: {
       type: String,
       required: true,
     },
@@ -43,8 +35,8 @@ const supplierSchema = new mongoose.Schema(
       },
     },
     product: {
-      type: String,
-      required: true,
+      type: Schema.Types.ObjectId,
+      ref: 'Product',
     },
     serviceArea: {
       type: [String], // Array of service areas
@@ -60,6 +52,10 @@ const supplierSchema = new mongoose.Schema(
       type: Number,
       min: 0,
       max: 5,
+    },
+    verified: {
+      type: Boolean,
+      default: false,
     },
   },
   {
