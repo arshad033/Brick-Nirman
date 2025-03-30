@@ -92,3 +92,21 @@ export const updateSupplier = asyncHandler(async (req, res) => {
       new ApiResponse(200, updatedSupplier, 'Supplier updated successfully')
     );
 });
+
+// Delete a supplier
+export const deleteSupplier = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { role } = req.query;
+  if (role == 'user') {
+    throw new ApiError(403, 'Unauthorized to delete supplier');
+  }
+  if (role == 'admin' || role == 'supplier') {
+    const supplier = await Supplier.findByIdAndDelete(id);
+    if (!supplier) {
+      throw new ApiError(404, 'Supplier not found');
+    }
+  }
+  res
+    .status(200)
+    .json(new ApiResponse(200, null, 'Supplier deleted successfully'));
+});
