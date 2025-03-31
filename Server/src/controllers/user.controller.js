@@ -4,6 +4,7 @@ import { User } from '../models/user.model.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 
 //generate the access and resfresh token
 export const generateAccessAndRefreshToken = async (userId) => {
@@ -30,33 +31,53 @@ export const generateAccessAndRefreshToken = async (userId) => {
 // Register User
 export const registerUser = asyncHandler(async (req, res) => {
   const { fullName, email, phone, address, role, password } = req.body;
+
+  // Validate required fields
   if (!fullName || !email || !phone || !role || !password) {
     throw new ApiError(400, 'Please fill all required fields');
   }
 
-  const avatarLocalPath = req.files?.avatar[0]?.path;
-  if (avatarLocalPath) {
+  // Check if user already exists
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    throw new ApiError(400, 'User already exists');
+  }
+
+  // Handle avatar upload if provided
+  let avatarUrl;
+  if (req.files && req.files.avatar && req.files.avatar[0]) {
+    const avatarLocalPath = req.files.avatar[0].path;
     const avatarResponse = await uploadFileOnCloudinary(avatarLocalPath);
+
     if (!avatarResponse) {
       throw new ApiError(500, 'Failed to upload avatar file');
     }
-  }
-  const existingUser = await User.findOne({ email });
-  if (existingUser) throw new ApiError(400, 'User already exists');
 
+    avatarUrl = avatarResponse.url;
+  }
+
+  // Hash password before storing
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  // Create new user
   const user = await User.create({
     fullName,
     email,
     phone,
     address,
-    avatar: avatarResponse.url,
+    avatar: avatarUrl, // This will be undefined if no avatar was uploaded
     role,
-    password,
+    password: hashedPassword,
   });
 
+  // Remove password from response
+  const userResponse = user.toObject();
+  delete userResponse.password;
+
+  // Return success response
   res
     .status(201)
-    .json(new ApiResponse(201, user, 'User registered successfully'));
+    .json(new ApiResponse(201, userResponse, 'User registered successfully'));
 });
 
 // Login User
