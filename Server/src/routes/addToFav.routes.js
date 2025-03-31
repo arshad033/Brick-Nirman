@@ -4,7 +4,7 @@ import {
     addToFavorites, 
     getFavorites, 
     removeFromFavorites 
-} from "../controllers/addToCart.controller.js";
+} from "../controllers/addToFav.controller.js";
 import { verifyJwt } from "../middlewares/auth.middleware.js";
 
 // ✅ Protect all routes with JWT authentication
