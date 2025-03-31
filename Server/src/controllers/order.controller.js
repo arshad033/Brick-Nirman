@@ -1,7 +1,7 @@
-import { Order } from "../models/Order.js";
+import { Order } from "../models/order.model.js";
 import { ApiError } from "../utils/ApiError.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
-
+import { asyncHandler } from "../utils/asyncHandler.js";
 // ✅ Create a New Order
 export const createOrder = asyncHandler(async (req, res) => {
     const { userId, products, totalAmount, paymentMethod, deliveryAddress } = req.body;
