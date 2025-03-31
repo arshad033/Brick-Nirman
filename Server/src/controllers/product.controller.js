@@ -13,11 +13,11 @@ export const createProduct = asyncHandler(async (req, res) => {
     }
 
     // ✅ Extract image paths from `req.files`
-    const imagePaths = req.files?.images?.path
+    const imagePaths = req.file?.path
 
     // ✅ Validate image presence
     if (!imagePaths) {
-        throw new ApiError(400, "At least one image is required");
+        throw new ApiError(400, "image is required");
     }
 
     const uploadedImage = await uploadOnCloudinary(imagePaths);
@@ -46,59 +46,35 @@ export const createProduct = asyncHandler(async (req, res) => {
 
 
 export const getAllProducts = asyncHandler(async (req, res) => {
-    const { page = 1, limit = 10, search, category, minPrice, maxPrice } = req.query;
 
-    const filters = {};
-
-    // ✅ Filtering
-    if (search) {
-        filters.$or = [
-            { name: { $regex: search, $options: "i" } },
-            { description: { $regex: search, $options: "i" } },
-            { category: { $regex: search, $options: "i" } }
-        ];
-    }
-
-    if (category) filters.category = category;
-    if (minPrice) filters.price = { ...filters.price, $gte: minPrice };
-    if (maxPrice) filters.price = { ...filters.price, $lte: maxPrice };
-
-    const skip = (page - 1) * limit;
-
-    const products = await Product.find(filters)
-        .populate("supplierId", "name contact")  // Populate supplier details
-        .populate("reviews.userId", "name email")  // Populate review user details
-        .sort({ createdAt: -1 })  // Sort by newest
-        .skip(skip)
-        .limit(Number(limit));
-
-    const totalProducts = await Product.countDocuments(filters);
-
-    if (!products || products.length === 0) {
-        throw new ApiError(404, "No products found");
-    }
-
-    res.status(200).json(
-        new ApiResponse(200, true, {
-            products,
-            totalProducts,
-            totalPages: Math.ceil(totalProducts / limit),
-            currentPage: Number(page),
-        }, null, "Products fetched successfully")
+   const products = await Product.find()
+   let message 
+   if(products.length === 0) {
+       message = "No products found"
+   }
+   else{
+      message = "Products fetched successfully"
+   }
+    
+    res
+    .status(200)
+    .json( new ApiResponse(200,products ,message)
     );
 });
 
 export const getProductById = asyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id)
-        .populate("supplierId", "name contact")  // Populate supplier details
-        .populate("reviews.userId", "name email");  // Populate review user details
 
-    if (!product) {
-        throw new ApiError(404, "Product not found");
+    let message 
+    if(product.length === 0) {
+        message = "No products found"
+    }
+    else{
+        message = "Products fetched successfully"
     }
 
     res.status(200).json(
-        new ApiResponse(200, true, product, null, "Product fetched successfully")
+        new ApiResponse(200, product, message)
     );
 });
 
@@ -132,7 +108,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
     await product.save();
 
     res.status(200).json(
-        new ApiResponse(200, true, product, null, "Product updated successfully")
+        new ApiResponse(200,product, "Product updated successfully")
     );
 });
 
@@ -145,6 +121,6 @@ export const deleteProduct = asyncHandler(async (req, res) => {
     }
 
     res.status(200).json(
-        new ApiResponse(200, true, null, null, "Product deleted successfully")
+        new ApiResponse(200,"Product deleted successfully")
     );
 });

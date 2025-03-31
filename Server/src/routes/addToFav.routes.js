@@ -13,6 +13,6 @@ router.use(verifyJwt);
 // ✅ Routes
 router.route("/add-to-favorites").post(addToFavorites);
 router.route("/get-favorites").get(getFavorites);
-router.route("/remove-from-favorites").delete(removeFromFavorites);
+router.route("/remove-favorites").delete(removeFromFavorites);
 
 export default router;

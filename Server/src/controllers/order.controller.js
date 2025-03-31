@@ -4,8 +4,8 @@ import { ApiResponse } from "../utils/ApiResponse.js"
 import { asyncHandler } from "../utils/asyncHandler.js";
 // ✅ Create a New Order
 export const createOrder = asyncHandler(async (req, res) => {
-    const { userId, products, totalAmount, paymentMethod, deliveryAddress } = req.body;
-
+    const { products, totalAmount, paymentMethod, deliveryAddress } = req.body;
+    const userId = req.user._id
     // Validate required fields
     if (!userId || !products || !totalAmount || !paymentMethod || !deliveryAddress) {
         throw new ApiError(400, "All required fields must be provided");
@@ -29,7 +29,6 @@ export const createOrder = asyncHandler(async (req, res) => {
         totalAmount,
         paymentMethod,
         deliveryAddress,
-        notes: notes || null
     });
 
     await order.save();
@@ -40,11 +39,9 @@ export const createOrder = asyncHandler(async (req, res) => {
 });
 
 // ✅ Get All Orders with Population
-export const getAllOrders = asyncHandler(async (req, res) => {
+export const getAllOrders = asyncHandler(async (req, res) => {       
         const orders = await Order.find(req.user._id)
-            // .populate("userId")  
-            // .populate("products.productId")
-            
+
         // ✅ Validation: Check if orders exist
         if (!orders || orders.length === 0) {
             throw new ApiError(404, "No orders found");
@@ -60,9 +57,7 @@ export const getAllOrders = asyncHandler(async (req, res) => {
 // ✅ Get Order by ID
 export const getOrderById = asyncHandler(async (req, res) => {
         const order = await Order.findById(req.params.id)
-            // .populate("userId", "name email")   // Populate user info
-            // .populate("products.productId", "name price description category stock");  // Populate product info
-    
+         
         // ✅ Validation: Check if the order exists
         if (!order) {
             throw new ApiError(404, "Order not found");
@@ -84,8 +79,7 @@ export const updateOrder = asyncHandler(async (req, res) => {
     }
 
     const updatedOrder = await Order.findById(req.params.id)
-        .populate("userId")
-        .populate("products.productId");
+
 
     // ✅ Check if the order exists
     if (!updatedOrder) {

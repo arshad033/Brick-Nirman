@@ -13,18 +13,10 @@ const uploadOnCloudinary = async (localFilePath) => {
   try {
     if (!localFilePath) return null;
     //upload the file on cloudinary
-    console.log('localPath: ', localFilePath);
-    //error due to dot env config
-    // console.log('Cloudinary Config:', cloudinary.config());
-    // console.log('Cloud Name:', process.env.CLOUDINARY_CLOUD_NAME);
-    // console.log('API Key:', process.env.CLOUDINARY_API_KEY);
-    // console.log('API Secret:', process.env.CLOUDINARY_API_SECRET);
-
     const response = await cloudinary.uploader.upload(localFilePath, {
       resource_type: 'auto',
     });
-    // file has been uploaded successfull
-    console.log('file is uploaded on cloudinary: ', response);
+
     fs.unlinkSync(localFilePath);
     return response;
   } catch (error) {

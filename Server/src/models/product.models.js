@@ -32,9 +32,8 @@ const productSchema = new mongoose.Schema({
         type: String,    // e.g., "A", "B", "C"
         required: true
     },
-    images: {
-        type: [String],  // Array of image URLs
-        default: []
+    image: {
+        type: String,  // Array of image URL
     },
     supplierId: {
         type: mongoose.Schema.Types.ObjectId,

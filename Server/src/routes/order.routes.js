@@ -6,8 +6,8 @@ import { verifyJwt } from "../middlewares/auth.middleware.js";
 router.use(verifyJwt)
 router.route("/create-order").post(createOrder);
 router.route("/get-All-Orders").get(getAllOrders);
-router.route("/update-orders").put(updateOrder);
-router.route("/delete-orders").delete(cancelOrder);
+router.route("/update-orders/:id").patch(updateOrder);
+router.route("/cancel-order/:id").delete(cancelOrder);
 router.route("/get-order/:id").get(getOrderById);
 
 export default router;
