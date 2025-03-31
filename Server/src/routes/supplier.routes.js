@@ -5,7 +5,7 @@ import {
   getSupplierById,
   updateSupplier,
   deleteSupplier,
-} from '../controllers/supplier.controllers.js';
+} from '../controllers/supplier.controller.js';
 import { verifyJwt } from '../middlewares/auth.middleware.js';
 
 const router = Router();

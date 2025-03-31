@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const supplierSchema = new mongoose.Schema(
   {
     supplierId: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     },
     name: {
@@ -35,7 +35,7 @@ const supplierSchema = new mongoose.Schema(
       },
     },
     product: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Product',
     },
     serviceArea: {
