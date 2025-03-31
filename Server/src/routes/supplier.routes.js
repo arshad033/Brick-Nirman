@@ -11,18 +11,18 @@ import { verifyJwt } from '../middlewares/auth.middleware.js';
 const router = Router();
 
 // Create a new supplier
-router.route('/').post(verifyJwt, createSupplier);
+router.route('/register').post(createSupplier);
 
 // Get all suppliers
-router.route('/').get(verifyJwt, getAllSuppliers);
+router.route('/').get(getAllSuppliers);
 
 // Get a single supplier by ID
-router.route('/:id').get(verifyJwt, getSupplierById);
+router.route('/:id').get(getSupplierById);
 
 // Update a supplier
-router.route('/:id').put(verifyJwt, updateSupplier);
+router.route('/update').put(verifyJwt, updateSupplier);
 
 // Delete a supplier
-router.route('/:id').delete(verifyJwt, deleteSupplier);
+router.route('/delete').delete(verifyJwt, deleteSupplier);
 
 export default router;
