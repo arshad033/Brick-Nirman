@@ -2,6 +2,7 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import { ApiError } from '../utils/ApiError.js';
 import { User } from '../models/user.model.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
+import { uploadOnCloudinary } from '../utils/cloudinary.js';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
@@ -44,10 +45,15 @@ export const registerUser = asyncHandler(async (req, res) => {
   }
 
   // Handle avatar upload if provided
+  console.log('req files: ', req.file);
+  // console.log(req.files.avatar);
   let avatarUrl;
-  if (req.files && req.files.avatar && req.files.avatar[0]) {
-    const avatarLocalPath = req.files.avatar[0].path;
-    const avatarResponse = await uploadFileOnCloudinary(avatarLocalPath);
+  if (req.file) {
+    const avatarLocalPath = req.file.path;
+    console.log(avatarLocalPath);
+
+    const avatarResponse = await uploadOnCloudinary(avatarLocalPath);
+    console.log('avatarResponse: ', avatarResponse);
 
     if (!avatarResponse) {
       throw new ApiError(500, 'Failed to upload avatar file');
