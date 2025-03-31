@@ -27,7 +27,7 @@ export const addToFavorites = asyncHandler(async (req, res) => {
     });
 
     res.status(201).json(
-        new ApiResponse(201, true, favorite, null, "Added to favorites successfully")
+        new ApiResponse(201, favorite, "Added to favorites successfully")
     );
 });
 
@@ -44,7 +44,7 @@ export const getFavorites = asyncHandler(async (req, res) => {
     }
 
     res.status(200).json(
-        new ApiResponse(200, true, favorites, null, "Favorites retrieved successfully")
+        new ApiResponse(200, favorites, "Favorites retrieved successfully")
     );
 });
 
@@ -69,6 +69,6 @@ export const removeFromFavorites = asyncHandler(async (req, res) => {
     }
 
     res.status(200).json(
-        new ApiResponse(200, true, null, null, "Removed from favorites successfully")
+        new ApiResponse(200, "Removed from favorites successfully")
     );
 });
