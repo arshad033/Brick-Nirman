@@ -25,7 +25,7 @@ app.use('/api/v1/orders', orderRouter);
 app.use('/api/v1/products', productRouter);
 app.use('/api/v1/addToFav', AddToFavRouter);
 app.use('/api/v1/addToCart', AddToCartRouter);
-app.use('/api/v1/user', userRouter);
-app.use('/api/v1/supplier', supplierRouter);
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/suppliers', supplierRouter);
 
 export { app };
