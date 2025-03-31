@@ -29,19 +29,22 @@ export const generateAccessAndRefreshToken = async (userId) => {
 };
 // Register User
 export const registerUser = asyncHandler(async (req, res) => {
-  const { fullName, email, phone, address, avatar, role, password } = req.body;
-  if (!fullName || !email || !phone || !address || !role || !password) {
+  const { fullName, email, phone, address, role, password } = req.body;
+  if (!fullName || !email || !phone || !role || !password) {
     throw new ApiError(400, 'Please fill all required fields');
   }
+
   const avatarLocalPath = req.files?.avatar[0]?.path;
-  const avatarResponse = await uploadFileOnCloudinary(avatarLocalPath);
-  if (!avatarResponse) {
-    throw new ApiError(500, 'Failed to upload avatar file');
+  if (avatarLocalPath) {
+    const avatarResponse = await uploadFileOnCloudinary(avatarLocalPath);
+    if (!avatarResponse) {
+      throw new ApiError(500, 'Failed to upload avatar file');
+    }
   }
   const existingUser = await User.findOne({ email });
   if (existingUser) throw new ApiError(400, 'User already exists');
 
-  const user = new User({
+  const user = await User.create({
     fullName,
     email,
     phone,
@@ -50,7 +53,6 @@ export const registerUser = asyncHandler(async (req, res) => {
     role,
     password,
   });
-  await user.save();
 
   res
     .status(201)
