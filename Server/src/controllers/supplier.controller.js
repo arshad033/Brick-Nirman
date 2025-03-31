@@ -1,4 +1,5 @@
 import { Supplier } from '../models/supplierModel.js';
+import { User } from '../models/user.model.js';
 import asyncHandler from '../middlewares/asyncHandler.js';
 import ApiResponse from '../utils/ApiResponse.js';
 import ApiError from '../utils/ApiError.js';
@@ -102,6 +103,7 @@ export const deleteSupplier = asyncHandler(async (req, res) => {
   }
   if (role == 'admin' || role == 'supplier') {
     const supplier = await Supplier.findByIdAndDelete(id);
+    const user = await User.findById(supplier._id, { $set: { role: 'user' } });
     if (!supplier) {
       throw new ApiError(404, 'Supplier not found');
     }
