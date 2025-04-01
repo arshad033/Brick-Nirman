@@ -5,10 +5,10 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 export const createProduct = asyncHandler(async (req, res) => {
-    const { name, description, category, price, quantityAvailable, size, grade, supplierId } = req.body;
+    const { name, description, category, price, quantityAvailable, size, grade } = req.body;
 
     // ✅ Validation: Ensure required fields
-    if (!name || !description || !category || !price || !quantityAvailable || !size || !grade || !supplierId) {
+    if (!name || !description || !category || !price || !quantityAvailable || !size || !grade ) {
         throw new ApiError(400, "All fields are required");
     }
 
@@ -35,8 +35,8 @@ export const createProduct = asyncHandler(async (req, res) => {
         quantityAvailable,
         size,
         grade,
-        images: uploadedImage,
-        supplierId
+        image: uploadedImage.secure_url,
+        supplierId : req.user._id
     });
 
     res.status(201).json(
