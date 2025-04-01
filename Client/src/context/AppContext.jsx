@@ -6,11 +6,11 @@ export const AppContext = createContext();
 
 // ✅ Create Provider Component
 export const AppProvider = ({ children }) => {
-    const [user, setUser] = useState(null);       // State Example
+    const [product, setProduct] = useState(null);       // State Example
     const [theme, setTheme] = useState("light");  // Another State Example
-
+    
     return (
-        <AppContext.Provider value={{ user, setUser, theme, setTheme }}>
+        <AppContext.Provider value={{ product, setProduct, theme, setTheme }}>
             {children}
         </AppContext.Provider>
     );
