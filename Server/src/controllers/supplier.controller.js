@@ -1,13 +1,17 @@
 import { Supplier } from '../models/supplier.model.js';
 import { User } from '../models/user.model.js';
-import {asyncHandler} from '../utils/asyncHandler.js';
-import {ApiResponse} from '../utils/ApiResponse.js';
-import {ApiError} from '../utils/ApiError.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
+import { ApiResponse } from '../utils/ApiResponse.js';
+import { ApiError } from '../utils/ApiError.js';
 
 // Create a new supplier
 export const createSupplier = asyncHandler(async (req, res) => {
   const { supplierId, name, gstNumber, phone, email, address, serviceArea } =
     req.body;
+  const user = await User.findById(supplierId);
+  if (!user) {
+    throw new ApiError(401, 'User not found');
+  }
   if (
     !supplierId ||
     !name ||
@@ -96,18 +100,28 @@ export const updateSupplier = asyncHandler(async (req, res) => {
 
 // Delete a supplier
 export const deleteSupplier = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const { role } = req.query;
-  if (role == 'user') {
+  const { id, role } = req.query; // ✅ Correct way to access query parameters
+
+  if (!role || !id) {
+    throw new ApiError(400, 'Id and Role are required');
+  }
+
+  const userRole = await User.findById(req.user._id);
+  if (role === 'user' || userRole.role === 'user') {
     throw new ApiError(403, 'Unauthorized to delete supplier');
   }
-  if (role == 'admin' || role == 'supplier') {
-    const supplier = await Supplier.findByIdAndDelete(id);
-    const user = await User.findById(supplier._id, { $set: { role: 'user' } });
-    if (!supplier) {
-      throw new ApiError(404, 'Supplier not found');
-    }
+
+  const supplier = await Supplier.findByIdAndDelete(id);
+  if (!supplier) {
+    throw new ApiError(404, 'Supplier not found');
   }
+  const user = await User.findByIdAndUpdate(supplier.supplierId, {
+    $set: { role: 'user' },
+  });
+  if (!user) {
+    throw new ApiError(404, 'User not found');
+  }
+
   res
     .status(200)
     .json(new ApiResponse(200, null, 'Supplier deleted successfully'));

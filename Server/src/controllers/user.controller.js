@@ -62,9 +62,6 @@ export const registerUser = asyncHandler(async (req, res) => {
     avatarUrl = avatarResponse.url;
   }
 
-  // Hash password before storing
-  const hashedPassword = await bcrypt.hash(password, 10);
-
   // Create new user
   const user = await User.create({
     fullName,
@@ -73,7 +70,7 @@ export const registerUser = asyncHandler(async (req, res) => {
     address,
     avatar: avatarUrl, // This will be undefined if no avatar was uploaded
     role,
-    password: hashedPassword,
+    password,
   });
 
   // Remove password from response
@@ -89,14 +86,18 @@ export const registerUser = asyncHandler(async (req, res) => {
 // Login User
 export const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
+  if (!email || !password) {
+    throw new ApiError(400, 'Both fields are required');
+  }
   const user = await User.findOne({ email });
-
-  if (!user || !(await user.isPasswordCorrect(password))) {
+  const isPasswordCorrect = await user.isPasswordCorrect(password);
+  if (!user || !isPasswordCorrect) {
     throw new ApiError(401, 'Invalid email or password');
   }
 
-  const accessToken = user.generateAccessToken();
-  const refreshToken = user.generateRefreshToken();
+  const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
+    user._id
+  );
 
   const loggedInUser = await User.findById(user._id).select(
     '-password -refreshToken'
@@ -134,7 +135,7 @@ export const getUserProfile = asyncHandler(async (req, res) => {
 
 // Update User Profile
 export const updateUserProfile = asyncHandler(async (req, res) => {
-  const { fullName, email, phone, address } = req.body;
+  const { fullName, email, phone, address, password } = req.body;
 
   const user = await User.findById(req.user._id);
   if (!user) throw new ApiError(404, 'User not found');
@@ -149,6 +150,9 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
   }
   if (address) {
     user.address = address;
+  }
+  if (password) {
+    user.password = password;
   }
   await user.save();
   const updatedUser = await User.findOne(req.user?._id);
