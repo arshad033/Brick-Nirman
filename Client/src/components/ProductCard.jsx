@@ -36,11 +36,11 @@ function ProductCard({ product }) {
     <div
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className="w-[20rem] h-[22rem] bg-white rounded-2xl border-1 border-gray-700 shadow-lg overflow-hidden"
+      className="w-[20rem] h-[22rem] bg-gray-800 rounded-2xl border-1 border-gray-500 shadow-lg overflow-hidden p-4"
     >
       <div
         className={`${
-          hover ? `scale-[0.95] ` : `scale-[0.8]`
+          hover ? `scale-[1] ` : `scale-[0.85]`
         } w-full h-[63%] flex justify-center items-center  transition-all duration-500`}
       >
         <img
@@ -51,13 +51,13 @@ function ProductCard({ product }) {
       </div>
       <div className="p-2">
         <div className=" flex items-center justify-between py-1">
-          <h2 className="text-black text-xl font-bold">{product.name}</h2>
-          <span className="text-black text-lg font-semibold pr-2">
+          <h2 className="text-xl font-bold text-orange-300">{product.name}</h2>
+          <span className="text-lg font-semibold pr-2">
             Size: {product.size}
           </span>
         </div>
         <div className=" flex items-center justify-between py-1">
-          <span className="text-black text-lg font-semibold">
+          <span className="text-lg font-semibold">
             Rs.{product.price}
           </span>
           <div className="flex items-center ">
@@ -66,7 +66,7 @@ function ProductCard({ product }) {
           </div>
         </div>
         <div className="flex items-center justify-center ">
-          <button className="bg-blue-500 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
+          <button className="bg-blue-600 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
             Add to Cart
           </button>
         </div>
