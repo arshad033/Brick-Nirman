@@ -8,7 +8,7 @@ const ProductPage = () => {
   const { product } = useContext(AppContext);
 
   const filteredProducts = product
-    .filter((product) =>
+    ?.filter((product) =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .sort((a, b) =>
@@ -43,9 +43,9 @@ const ProductPage = () => {
 
       {/* Products Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-        {filteredProducts.length > 0 ? (
-          filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+        {filteredProducts?.length > 0 ? (
+          filteredProducts?.map((product, index) => (
+            <ProductCard key={index} product={product} />
           ))
         ) : (
           <p className="text-center text-gray-400 col-span-full">
