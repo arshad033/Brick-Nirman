@@ -1,11 +1,12 @@
 import React from "react";
-import { Star } from "lucide-react";
+import { Star, CheckCircle } from "lucide-react";
 
 const SupplierCard = () => {
   const supplier = {
     name: "TechSupply Solutions",
     rating: 4.5,
     joinedDate: "March 15, 2023",
+    verified: true, // Determines if the supplier is verified
     serviceArea: "North America, Europe",
     email: "contact@techsupplysolutions.com",
     profilePic:
@@ -43,31 +44,38 @@ const SupplierCard = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto bg-gradient-to-br from-gray-600 to-gray-700 rounded-xl shadow-xl p-6">
-      <div className="flex flex-col md:flex-row items-center gap-6">
+    <div className="bg-gradient-to-b from-gray-800 to-gray-700 p-6 rounded-xl shadow-xl border border-gray-600 hover:shadow-2xl hover:scale-105 transition-transform duration-300 ease-out">
+      <div className="flex flex-col items-center gap-6 text-center md:text-left">
         <img
           src={supplier.profilePic}
           alt={`${supplier.name} profile`}
-          className="w-24 h-24 rounded-full object-cover border-4 border-blue-500 shadow-lg"
+          className="w-28 h-28 rounded-full object-cover border-4 border-blue-500 shadow-md -mt-10"
         />
 
         <div className="flex-1">
-          <h2 className="text-2xl font-bold text-white mb-2">
-            {supplier.name}
-          </h2>
-          <div className="flex items-center mb-4">
+          <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
+            <h2 className="text-2xl font-bold text-white">{supplier.name}</h2>
+            {supplier.verified && (
+              <CheckCircle className="w-6 h-6 text-blue-500" />
+            )}
+          </div>
+
+          <div className="flex justify-center md:justify-start items-center mb-4">
             {renderRatingStars(supplier.rating)}
             <span className="ml-2 text-white text-sm">{supplier.rating}</span>
           </div>
-          <div className="space-y-2 text-gray-300">
+
+          <div className="space-y-1 text-gray-300 text-sm">
             <div>
-              <strong>Joined:</strong> {supplier.joinedDate}
+              <strong className="text-blue-400">Joined:</strong>{" "}
+              {supplier.joinedDate}
             </div>
             <div>
-              <strong>Service Area:</strong> {supplier.serviceArea}
+              <strong className="text-blue-400">Service Area:</strong>{" "}
+              {supplier.serviceArea}
             </div>
             <div>
-              <strong>Contact:</strong>{" "}
+              <strong className="text-blue-400">Contact:</strong>{" "}
               <a
                 href={`mailto:${supplier.email}`}
                 className="text-blue-400 hover:underline"
@@ -80,7 +88,7 @@ const SupplierCard = () => {
       </div>
 
       <div className="mt-6">
-        <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-xl transition-transform transform hover:scale-105">
+        <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-xl transition-transform transform hover:scale-105 shadow-md">
           View Products
         </button>
       </div>
