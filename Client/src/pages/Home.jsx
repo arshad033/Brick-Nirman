@@ -4,6 +4,8 @@ import Dashboard from '../components/Dashboard'
 import { apiUrl } from '../utils/constant';
 import { AppContext } from '../context/AppContext';
 import ProductCard from '../components/ProductCard';
+import Footer from '../components/Footer';
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
   
@@ -23,14 +25,18 @@ function Home() {
   }
   const { product, setProduct } = useContext(AppContext);
   console.log(product);
-  
+  const navigate = useNavigate()
+  const handleViewMore = () => {
+    navigate('/products')
+  }
+
   useEffect(() => {
     fetchData();
   },[])
 
   return (
     <>       
-        <div className="w-screen overflow-x-hidden">
+        <div className="w-screen overflow-x-hidden text-white">
           <Dashboard/>
           <section className="w-full bg-gray-800 text-white py-16 text-center">
             <h2 className="text-3xl font-semibold">Welcome to Jay Jalaram Brick Works!</h2>
@@ -61,16 +67,36 @@ function Home() {
               </div>
             </div>
           </section>
-          <div className="">
+          <div className="py-10">
             <div className="">
-              <h1>Best Selling</h1>
-              <div className="">
+              <div className="flex justify-between px-12">
+                <h1 className="text-2xl font-bold">Best Selling</h1>
+                <button className="text-md underline text-blue-500 cursor-pointer">View More </button>
+              </div>
+              <div className=" flex items-center justify-center flex-wrap gap-5 mt-5">
                 {product?.map((product,index) => (
                   <ProductCard key={index} product={product} />)
                   )
                 }
               </div>
             </div>
+          </div>
+          <div className="py-10">
+            <div className="">
+              <div className="flex justify-between px-12">
+                <h1 className="text-2xl font-bold">New Product</h1>
+                <button onClick={()=>handleViewMore()} className="text-md underline text-blue-500 cursor-pointer">View More </button>
+              </div>
+              <div className=" flex items-center justify-center flex-wrap gap-5 mt-5">
+                {product?.map((product,index) => (
+                  <ProductCard key={index} product={product} />)
+                  )
+                }
+              </div>
+            </div>
+          </div>
+          <div className="py-10">
+            <Footer/>
           </div>
         </div>
     </>
