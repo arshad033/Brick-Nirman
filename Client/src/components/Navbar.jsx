@@ -1,8 +1,11 @@
 import { IoMdMenu } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar({ setIsSidebarOpen, setIsLoginOpen, setIsRegisterOpen }) {
-    const handleLoginButton = (event) => {
+    
+  const navigate = useNavigate()
+  const handleLoginButton = (event) => {
         event.stopPropagation()
         setIsLoginOpen(true);
       };
@@ -10,8 +13,20 @@ export default function Navbar({ setIsSidebarOpen, setIsLoginOpen, setIsRegister
         event.stopPropagation()
         setIsRegisterOpen(true);
       };
+      const handleNav = (item) => {
+        if(item === "Home"){
+            navigate('/')
+        }
+        else if(item === "About Us"){
+            navigate('/about-us')
+        }
+        else if(item === "Contact Us"){
+            navigate('/contact-us')
+        }
+        
+      }
   return (
-    <header className="max-sm:w-[106%] w-full h-[5rem] flex items-center justify-between px-4 max-sm:pr-6">
+    <header className="max-sm:w-[106%] w-full h-[5rem] bg-gray-900 flex items-center justify-between px-4 max-sm:pr-6 top-0 fixed z-30">
       <div className="flex items-center space-x-2">
         <div onClick={() => setIsSidebarOpen(true)} className="text-3xl font-bold cursor-pointer">
           <IoMdMenu />
@@ -22,9 +37,12 @@ export default function Navbar({ setIsSidebarOpen, setIsLoginOpen, setIsRegister
         <input type="text" placeholder="Search" className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none w-full" />
       </div>
       <div className="max-lg:hidden w-[20%] flex items-center justify-between">
-        <a href="#">Home</a>
-        <a href="#">About Us</a>
-        <a href="#">Contact Us</a>
+     { [
+        "Home",
+        "About Us",
+        "Contact Us"
+      ].map((item, index)=> <a onClick={()=>handleNav(item)} href="#" className="cursor-pointer" key={index} >{item}</a>) 
+     }
       </div>
       <div className="flex items-center space-x-4">
         <div className="flex space-x-4">
@@ -35,7 +53,7 @@ export default function Navbar({ setIsSidebarOpen, setIsLoginOpen, setIsRegister
             Register
           </button>
         </div>
-        <div className="max-sm:hidden max-sm:pr-2 flex items-center space-x-2">
+        <div className="max-sm:hidden lg:hidden max-sm:pr-2 flex items-center space-x-2">
           <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="User" className="w-8 h-8 rounded-full" />
           <span>Tom Cook</span>
         </div>

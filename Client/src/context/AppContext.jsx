@@ -6,14 +6,21 @@ export const AppContext = createContext();
 
 // ✅ Create Provider Component
 export const AppProvider = ({ children }) => {
-    const [product, setProduct] = useState(null);       // State Example
-    const [theme, setTheme] = useState("light");  // Another State Example
-    
+    const [product, setProduct] = useState(null);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [sideNavSelect, setSideNavSelect] = useState("Home");
+    const [isLoginOpen, setIsLoginOpen] = useState(false);
+    const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+
     return (
-        <AppContext.Provider value={{ product, setProduct, theme, setTheme }}>
+        <AppContext.Provider value={{ 
+            product, setProduct, 
+            isSidebarOpen, setIsSidebarOpen, 
+            sideNavSelect, setSideNavSelect, 
+            isLoginOpen, setIsLoginOpen, 
+            isRegisterOpen, setIsRegisterOpen 
+        }}>
             {children}
         </AppContext.Provider>
     );
 };
-
-

@@ -1,18 +1,44 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import HomeSlider from "./HomeSlider";
 import Login from "./Login";
 import UserRegistration from "./UserRegistration";
+import { useNavigate } from "react-router-dom";
+import { AppContext } from "../context/AppContext";
 
 export default function Dashboard() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [sideNavSelect, setSideNavSelect] = useState("Home");
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
-
+  const { 
+    isSidebarOpen, setIsSidebarOpen, 
+    sideNavSelect, setSideNavSelect, 
+    isLoginOpen, setIsLoginOpen, 
+    isRegisterOpen, setIsRegisterOpen 
+  } = useContext(AppContext);
+  
+  const navigate = useNavigate()
   const handleSideNav = (value) => {
     setSideNavSelect(value);
+    
+    if(value == "Home")
+    {
+       navigate('/')
+    }
+    else if(value == "Supplier")
+    {
+       navigate('/suppliers')
+    }
+    else if(value == "Favorites")
+    {
+       navigate('/favourites')
+    }
+    else if(value == "Carts")
+    {
+       navigate('/carts')
+    }
+    else if(value == "Orders")
+    {
+       navigate('/orders')
+    }
   };
   const [PopUp, setPopUp] = useState(true);
   const handlePopUp = (event) => {
@@ -32,7 +58,7 @@ export default function Dashboard() {
         });
       }
     }
-  }, [isLoginOpen, isRegisterOpen]);
+  }, [isLoginOpen, isRegisterOpen, setIsLoginOpen, setIsRegisterOpen]);
 
   return (
     <div className="w-full">
@@ -42,7 +68,7 @@ export default function Dashboard() {
         sideNavSelect={sideNavSelect}
         handleSideNav={handleSideNav}
       />
-      <div className="max-w-screen text-white z-10">
+      <div className="max-w-screen h-[5rem] text-white z-10">
         <Navbar
           setIsSidebarOpen={setIsSidebarOpen}
           setIsRegisterOpen={setIsRegisterOpen}

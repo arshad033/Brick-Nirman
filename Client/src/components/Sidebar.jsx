@@ -3,7 +3,7 @@ import { IoCloseSharp, logo, FaCartShopping } from "../assets/assets.js";
 
 export default function Sidebar({ isSidebarOpen, setIsSidebarOpen, sideNavSelect, handleSideNav }) {
   return (
-    <aside className={`${isSidebarOpen ? "left-0" : "-left-[100%]"} bg-gray-900 w-[16rem] py-5 text-white flex flex-col overflow-hidden transition-all duration-500 fixed h-full z-20`}>
+    <aside className={`${isSidebarOpen ? "left-0" : "-left-[100%]"} bg-gray-900 w-[16rem] py-5 text-white flex flex-col overflow-hidden transition-all duration-500 fixed h-full z-40`}>
       <div className="flex items-center justify-between px-5">
         <div className="w-[40%] h-[3rem]">
           <img className="w-full h-full scale-[1.5] object-cover" src={logo} alt="Logo" />
@@ -24,7 +24,7 @@ export default function Sidebar({ isSidebarOpen, setIsSidebarOpen, sideNavSelect
             <li
               key={item.name}
               onClick={() => handleSideNav(item.name)}
-              className={`${sideNavSelect === item.name && "bg-gray-800"} p-3 flex items-center space-x-3 hover:bg-gray-800 rounded-md`}
+              className={`${sideNavSelect === item.name && "bg-gray-800"} p-3 cursor-pointer flex items-center space-x-3 hover:bg-gray-800 rounded-md`}
             >
               {item.icon} <span>{item.name}</span>
             </li>
@@ -32,7 +32,7 @@ export default function Sidebar({ isSidebarOpen, setIsSidebarOpen, sideNavSelect
         </ul>
       </nav>
       <div className="w-full border-t-[1px] px-5 border-gray-700">
-        <div className="p-3 flex items-center space-x-3 hover:bg-gray-800 rounded-md">
+        <div className="p-3 flex items-center space-x-3 hover:bg-gray-800 rounded-md cursor-pointer">
           <span>Logout</span>
         </div>
       </div>
