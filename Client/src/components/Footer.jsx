@@ -1,9 +1,44 @@
 import { FaFacebookF, FaGooglePlay, FaInstagram, FaYoutube } from "react-icons/fa";
 import { IoIosAppstore, logo } from "../assets/assets";
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
 
 export default function Footer() {
+  const navigate = useNavigate();
+  const {setIsLoginOpen }= useContext(AppContext)
+ // Hnadle Quick Links
+  const handleQuickLinks = (item) => {
+    const routes = {
+      Home: "/",
+      Sellers: "/suppliers",
+      Cart: "/carts",
+      Favorites: "/favourites",
+      "All Products": "/products",
+    };
+
+    if (routes[item]) {
+      navigate(routes[item]);
+    }
+  };
+  // Handle My Account Links
+  const handleAccountLinks = (item) => {
+    console.log(item);
+    if(item == "Login"){
+      setIsLoginOpen(true)
+    }
+    const routes = {
+      "Order History": "/order-history",
+      "My Wishlist": "/wishlist",
+      "Track Order": "/track-order",
+    };
+
+    if (routes[item]) {
+      navigate(routes[item]);
+    }
+  };
   return (
-    <footer className="bg-gray-900 text-gray-300 p-6 sm:p-10 pb-8">
+    <footer className="bg-gray-800 text-gray-300 p-6 sm:p-10">
       <div className="w-[90%] mx-auto flex flex-col md:flex-row justify-between pb-6 gap-6">
         {/* Logo & Description */}
         <div className="md:w-[40%] text-center md:text-left">
@@ -11,7 +46,7 @@ export default function Footer() {
             <div className="w-[8rem] h-[4rem]">
               <img className="w-full h-full object-cover" src={logo} alt="Brick Nirman" />
             </div>
-            <h2 className="text-white font-bold text-xl mt-2 md:mt-0">
+            <h2 className="text-white font-bold text-xl mt-2 md:mt-4">
               BRICK <span className="text-red-500">NIRMAN</span>
             </h2>
           </div>
@@ -47,11 +82,15 @@ export default function Footer() {
         <div>
           <h3 className="text-white font-semibold">QUICK LINK</h3>
           <ul className="mt-3 space-y-3">
-            <li>Home</li>
-            <li>Sellers</li>
-            <li>Cart</li>
-            <li>Favorites</li>
-            <li>All Products</li>
+          {["Home", "Sellers", "Cart", "Favorites", "All Products"].map((item, index) => (
+            <li 
+              onClick={() => handleQuickLinks(item)} 
+              className="cursor-pointer" 
+              key={index}
+            >
+              {item}
+            </li>
+          ))}
           </ul>
         </div>
 
@@ -70,10 +109,15 @@ export default function Footer() {
         <div>
           <h3 className="text-white font-semibold">MY ACCOUNT</h3>
           <ul className="mt-3 space-y-3">
-            <li>Login</li>
-            <li>Order History</li>
-            <li>My Wishlist</li>
-            <li>Track Order</li>
+          {["Login", "Order History", "My Wishlist", "Track Order"].map((item, index) => (
+            <li 
+              onClick={() => handleAccountLinks(item)} 
+              className="cursor-pointer" 
+              key={index}
+            >
+              {item}
+            </li>
+          ))}
           </ul>
         </div>
 
