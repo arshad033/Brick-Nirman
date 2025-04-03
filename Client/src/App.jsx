@@ -7,6 +7,10 @@ import Order from "./pages/Order.jsx";
 import Checkout from "./pages/Checkout.jsx";
 import Footer from "./components/Footer.jsx";
 import Dashboard from "./components/Dashboard.jsx";
+import Favourites from "./pages/Favourites.jsx";
+import ContactUs from "./pages/ContactUs.jsx";
+import AboutUs from "./pages/AboutUs.jsx";
+import Cart from "./pages/Cart.jsx";
 
 function App() {
     return (
@@ -18,8 +22,12 @@ function App() {
                 <Route path="/products" element={<ProductPage />} />
                 <Route path="/orders" element={<Order />} />
                 <Route path="/buy-checkout" element={<Checkout />} />
+                <Route path="/favourites" element={<Favourites />} />
+                <Route path="/contact-us" element={<ContactUs />} />
+                <Route path="/about-us" element={<AboutUs />} />
+                <Route path="/carts" element={<Cart />} />
             </Routes>
-            <div className="py-10">
+            <div className="pt-10">
               <Footer/>
             </div>
         </div>
