@@ -33,7 +33,7 @@ const Registration = () => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto mt-10 p-6 rounded-2xl backdrop-blur-lg bg-blue-500/20 shadow-2xl border border-blue-500">
+    <div className="w-full max-w-md mx-auto p-6 rounded-2xl backdrop-blur-lg bg-blue-500/20 shadow-2xl border border-blue-500">
       <div className="text-center mb-6">
         <h2 className="text-2xl font-bold text-white">Register</h2>
         <p className="text-sm text-blue-300">Create a new account</p>

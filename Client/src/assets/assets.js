@@ -7,6 +7,8 @@ import { IoMdMenu } from "react-icons/io";
 import { IoCloseSharp } from "react-icons/io5";
 import { FaCartShopping } from "react-icons/fa6";
 import { FaHeart } from "react-icons/fa";
+import { FaGooglePlay } from "react-icons/fa";
+import { IoIosAppstore } from "react-icons/io";
 
 export {
     slider_img1,
@@ -17,5 +19,7 @@ export {
     IoMdMenu,
     IoCloseSharp,
     FaCartShopping,
-    FaHeart
+    FaHeart,
+    FaGooglePlay,
+    IoIosAppstore
 }
