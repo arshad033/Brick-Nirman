@@ -1,43 +1,34 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect } from 'react'
-import Dashboard from '../components/Dashboard'
-import { apiUrl } from '../utils/constant';
 import { AppContext } from '../context/AppContext';
 import ProductCard from '../components/ProductCard';
-import Footer from '../components/Footer';
 import { useNavigate } from 'react-router-dom';
+import SuppLierCard from '../components/SupplierCard';
+import HomeSlider from '../components/HomeSlider';
+import { fetchProducts } from '../utils/HandleAPIs';
 
 function Home() {
   
-  const fetchData = async () => {
-    try {
-      const response = await fetch(`${apiUrl}/products/get-all-products`,{
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const result = await response.json();
-      setProduct(result.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  }
-  const { product, setProduct } = useContext(AppContext);
-  console.log(product);
+  const {product,setProduct} = useContext(AppContext);
   const navigate = useNavigate()
-  const handleViewMore = () => {
+  
+  const handleViewMore = (val) => {
     navigate('/products')
+    if(val == 'supplier'){
+      navigate('/suppliers')
+    }
   }
 
   useEffect(() => {
-    fetchData();
+    fetchProducts(setProduct);
   },[])
 
   return (
     <>       
         <div className="w-screen overflow-x-hidden text-white">
-          <Dashboard/>
+        <div className="w-[99%] h-[40rem] mt-2 rounded-lg">
+          <HomeSlider />
+        </div>
           <section className="w-full bg-gray-800 text-white py-16 text-center">
             <h2 className="text-3xl font-semibold">Welcome to Jay Jalaram Brick Works!</h2>
             <p className="max-w-2xl text-xl mx-auto mt-4 text-gray-300">
@@ -96,7 +87,19 @@ function Home() {
             </div>
           </div>
           <div className="py-10">
-            <Footer/>
+            <div className="">
+              <div className="flex justify-between px-12">
+                <h1 className="text-2xl font-bold">Top Suppliers</h1>
+                <button onClick={()=>handleViewMore('supplier')} className="text-md underline text-blue-500 cursor-pointer">View More </button>
+              </div>
+              <div className=" flex items-center justify-center flex-wrap gap-5 mt-10">
+                {/* {product?.map((product,index) => (
+                  <SuppLierCard key={index} product={product} />)
+                  )
+                } */}
+                <SuppLierCard />
+              </div>
+            </div>
           </div>
         </div>
     </>
