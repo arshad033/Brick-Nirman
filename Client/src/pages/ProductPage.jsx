@@ -1,11 +1,12 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import { AppContext } from "../context/AppContext";
+import { fetchProducts } from "../utils/HandleAPIs";
 
 const ProductPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState("Newest");
-  const { product } = useContext(AppContext);
+  const { product,setProduct } = useContext(AppContext);
 
   const filteredProducts = product
     ?.filter((product) =>
@@ -16,7 +17,9 @@ const ProductPage = () => {
         ? new Date(b.dateAdded) - new Date(a.dateAdded)
         : new Date(a.dateAdded) - new Date(b.dateAdded)
     );
-
+ useEffect(() => {
+    fetchProducts(setProduct);
+  },[setProduct])
   return (
     <div className="p-4 sm:p-6 bg-gray-900 min-h-screen text-white">
       <h1 className="text-3xl font-bold mb-6 text-center">Product Page</h1>
