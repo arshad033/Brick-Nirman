@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Eye, EyeOff, Mail, Lock, User, Phone } from "lucide-react";
+import { registerUser } from "../utils/HandleAPIs";
+import { AppContext } from "../context/AppContext";
 
 const Registration = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -10,19 +12,23 @@ const Registration = () => {
   const [role, setRole] = useState("user");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const {user, setUser} = useContext(AppContext)
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Registration attempt:", {
-      name,
+    const userInputData = {
+      fullName:name,
       email,
       phone,
       role,
       password,
       confirmPassword,
-    });
+    };
+    registerUser(userInputData, setUser);
+
     // Add your registration logic here
   };
+  console.log(user)
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);

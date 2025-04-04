@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { loginUser } from "../utils/HandleAPIs";
+import { AppContext } from "../context/AppContext";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const {user, setUser} = useContext(AppContext)
+  console.log(user)
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Login attempt with:", { email, password });
+    const loginData = { email, password };
+    loginUser(loginData,setUser); // Assuming setUser is defined in your context or state management
   };
 
   const togglePasswordVisibility = () => {
