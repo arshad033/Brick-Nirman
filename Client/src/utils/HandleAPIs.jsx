@@ -33,6 +33,7 @@ export const registerUser = async (userInputData,setUser) => {
         const result = await response.json();
         if (result?.data) {
             setUser(result.data); // ✅ Update state inside component
+            localStorage.setItem("userId", result.data._id);
         }
     } catch (error) {
         console.error("Error registering user:", error);
@@ -60,7 +61,7 @@ export const loginUser = async (loginData, setUser,setIsLoginOpen) => {
         console.error("Error logging in:", error);
     }
 };
-
+.32
 export const logoutUser = async (setResponse) => {
     try {
         const response = await fetch(`${apiUrl}/users/logout`, {

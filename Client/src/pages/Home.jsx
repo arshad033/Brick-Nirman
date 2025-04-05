@@ -1,16 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect } from "react";
-import Dashboard from "../components/Dashboard";
 import { AppContext } from "../context/AppContext";
 import ProductCard from "../components/ProductCard";
-import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 import { fetchProducts } from "../utils/HandleAPIs";
 import SupplierCard from "../components/SupplierCard";
 import HomeSlider from "../components/HomeSlider";
+import { getAllSuppliers } from "../utils/HandleSupplier";
 
 function Home() {
-  const { product, setProduct } = useContext(AppContext);
+  const { product, setProduct,suppliers,setSuppliers } = useContext(AppContext);
   const navigate = useNavigate();
 
   const handleViewMore = (val) => {
@@ -22,6 +21,7 @@ function Home() {
 
   useEffect(() => {
     fetchProducts(setProduct);
+    getAllSuppliers(setSuppliers)
   }, []);
 
   return (
@@ -64,7 +64,8 @@ function Home() {
           <div className="">
             <div className="flex justify-between px-12">
               <h1 className="text-2xl font-bold">Best Selling</h1>
-              <button className="text-md underline text-blue-500 cursor-pointer">
+              <button onClick={() => handleViewMore()}
+               className="text-md underline text-blue-500 cursor-pointer">
                 View More{" "}
               </button>
             </div>
@@ -105,11 +106,10 @@ function Home() {
               </button>
             </div>
             <div className=" flex items-center justify-center flex-wrap gap-5 mt-10">
-              {/* {product?.map((product,index) => (
-                  <SuppLierCard key={index} product={product} />)
+              {suppliers?.map((supplier,index) => (
+                  <SupplierCard key={index} supplier={supplier} />)
                   )
-                } */}
-              <SupplierCard />
+                }
             </div>
           </div>
         </div>

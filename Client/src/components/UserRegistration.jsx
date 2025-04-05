@@ -26,7 +26,9 @@ const Registration = () => {
       confirmPassword,
     };
     registerUser(userInputData, (data) => {
-      if (data?.data?.role === "supplier") {
+      console.log(data);
+      
+      if (data?.role === "supplier") {
         setIsRegisterOpen(false);
         setIsSupplierOpen(true);
       }
