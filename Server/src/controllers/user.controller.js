@@ -29,6 +29,17 @@ export const generateAccessAndRefreshToken = async (userId) => {
     );
   }
 };
+export const AccessRefreshToken = asyncHandler(async(req,res)=>{
+  const refreshToken = req.cookies.refreshToken;
+  if(!refreshToken){
+      throw new ApiError("Refresh token is required",401)
+  }
+  const user = await User.findOne({refreshToken});
+  if(!user){
+      throw new ApiError("Invalid refresh token",401)
+  }
+  return res.json(new ApiResponse(200,user))  
+})
 // Register User
 export const registerUser = asyncHandler(async (req, res) => {
   const { fullName, email, phone, address, role, password } = req.body;
@@ -44,8 +55,6 @@ export const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(400, 'User already exists');
   }
 
-  // Handle avatar upload if provided
-  console.log('req files: ', req.file);
   // console.log(req.files.avatar);
   let avatarUrl;
   if (req.file) {
@@ -115,11 +124,7 @@ export const loginUser = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        {
-          user: loggedInUser,
-          accessToken,
-          refreshToken,
-        },
+        loggedInUser,
         'User logged in Succesfully'
       )
     );

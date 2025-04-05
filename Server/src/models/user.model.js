@@ -16,7 +16,7 @@ const userSchema = new Schema(
     avatar: { type: String },
     role: {
       type: String,
-      enum: ['user', 'seller', 'admin'],
+      enum: ['user', 'supplier', 'admin'],
       default: 'user',
     },
     password: { type: String, required: [true, 'password is required'] },
