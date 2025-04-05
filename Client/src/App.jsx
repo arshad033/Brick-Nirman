@@ -11,6 +11,7 @@ import Favourites from "./pages/Favourites.jsx";
 import ContactUs from "./pages/ContactUs.jsx";
 import AboutUs from "./pages/AboutUs.jsx";
 import Cart from "./pages/Cart.jsx";
+import SupplierProfile from "./pages/SupplierProfile.jsx";
 
 function App() {
     return (
@@ -26,6 +27,7 @@ function App() {
                 <Route path="/contact-us" element={<ContactUs />} />
                 <Route path="/about-us" element={<AboutUs />} />
                 <Route path="/carts" element={<Cart />} />
+                <Route path="/supplier-profile" element={<SupplierProfile />} />
             </Routes>
             <div className="pt-10">
               <Footer/>
