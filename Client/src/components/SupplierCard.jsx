@@ -1,17 +1,9 @@
 import React from "react";
 import { Star, CheckCircle } from "lucide-react";
 
-const SupplierCard = () => {
-  const supplier = {
-    name: "TechSupply Solutions",
-    rating: 4.5,
-    joinedDate: "March 15, 2023",
-    verified: true, // Determines if the supplier is verified
-    serviceArea: "North America, Europe",
-    email: "contact@techsupplysolutions.com",
-    profilePic:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTX0JxIRhcbqNMoP0-muq2qizRxRVWRQ1j7gA&s",
-  };
+const SupplierCard = ({supplier}) => {
+  
+console.log(supplier);
 
   const renderRatingStars = (rating) => {
     const stars = [];
@@ -47,40 +39,40 @@ const SupplierCard = () => {
     <div className="bg-gradient-to-b from-gray-800 to-gray-700 p-6 rounded-xl shadow-xl border border-gray-600 hover:shadow-2xl hover:scale-105 transition-transform duration-300 ease-out">
       <div className="flex flex-col items-center gap-6 text-center md:text-left">
         <img
-          src={supplier.profilePic}
-          alt={`${supplier.name} profile`}
+          src={supplier?.profilePic}
+          alt={`${supplier?.name} profile`}
           className="w-28 h-28 rounded-full object-cover border-4 border-blue-500 shadow-md -mt-10"
         />
 
         <div className="flex-1">
           <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
-            <h2 className="text-2xl font-bold text-white">{supplier.name}</h2>
-            {supplier.verified && (
+            <h2 className="text-2xl font-bold text-white">{supplier?.name}</h2>
+            {supplier?.verified && (
               <CheckCircle className="w-6 h-6 text-blue-500" />
             )}
           </div>
 
           <div className="flex justify-center md:justify-start items-center mb-4">
-            {renderRatingStars(supplier.rating)}
-            <span className="ml-2 text-white text-sm">{supplier.rating}</span>
+            {renderRatingStars(supplier?.rating)}
+            <span className="ml-2 text-white text-sm">{supplier?.rating}</span>
           </div>
 
           <div className="space-y-1 text-gray-300 text-sm">
             <div>
               <strong className="text-blue-400">Joined:</strong>{" "}
-              {supplier.joinedDate}
+              {supplier?.joinedDate}
             </div>
             <div>
               <strong className="text-blue-400">Service Area:</strong>{" "}
-              {supplier.serviceArea}
+              {supplier?.serviceArea}
             </div>
             <div>
               <strong className="text-blue-400">Contact:</strong>{" "}
               <a
-                href={`mailto:${supplier.email}`}
+                href={`mailto:${supplier?.email}`}
                 className="text-blue-400 hover:underline"
               >
-                {supplier.email}
+                {supplier?.email}
               </a>
             </div>
           </div>

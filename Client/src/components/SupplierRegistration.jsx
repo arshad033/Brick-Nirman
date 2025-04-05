@@ -1,8 +1,11 @@
-import React, { useState } from "react";
-import { Eye, EyeOff, Mail, Lock, User, Phone, Newspaper } from "lucide-react";
+import React, { useContext, useState } from "react";
+import { Mail, User, Phone, Newspaper } from "lucide-react";
+import { registerSupplier } from "../utils/HandleSupplier";
+import { AppContext } from "../context/AppContext";
 
 const SupplierRegistration = () => {
-  const [showPassword, setShowPassword] = useState(false);
+
+  const {setIsSupplierOpen} = useContext(AppContext)
   const [name, setName] = useState("");
   const [gstNumber, setGstNumber] = useState("");
   const [phone, setPhone] = useState("");
@@ -17,7 +20,6 @@ const SupplierRegistration = () => {
   });
   const [serviceArea, setServiceArea] = useState([]);
   const [currentArea, setCurrentArea] = useState("");
-  const [password, setPassword] = useState("");
 
   const handleAddressChange = (e) => {
     const { name, value } = e.target;
@@ -39,22 +41,21 @@ const SupplierRegistration = () => {
     setServiceArea(serviceArea.filter((_, index) => index !== indexToRemove));
   };
 
+  // Function to handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Supplier Registration attempt:", {
+   const supplierId = localStorage.getItem('userId')
+    const supplierData ={
+      supplierId,
       name,
       gstNumber,
       phone,
       email,
       address,
-      serviceArea,
-      password,
-    });
-    // Add your registration logic here
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+      serviceArea
+    }
+    // 
+    registerSupplier(supplierData,setIsSupplierOpen)
   };
 
   return (

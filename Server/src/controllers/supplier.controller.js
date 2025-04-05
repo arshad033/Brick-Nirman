@@ -8,10 +8,17 @@ import { ApiError } from '../utils/ApiError.js';
 export const createSupplier = asyncHandler(async (req, res) => {
   const { supplierId, name, gstNumber, phone, email, address, serviceArea } =
     req.body;
+    console.log("supplier : "+supplierId);
+    
   const user = await User.findById(supplierId);
   if (!user) {
     throw new ApiError(401, 'User not found');
   }
+  const existingSupplier = await Supplier.findOne({ supplierId });
+    if (existingSupplier) {
+      throw new ApiError(400, 'User already exists');
+    }
+  
   if (
     !supplierId ||
     !name ||
