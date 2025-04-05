@@ -5,6 +5,7 @@ import {
   logoutUser,
   getUserProfile,
   updateUserProfile,
+  AccessRefreshToken
 } from '../controllers/user.controller.js';
 import { upload } from '../middlewares/multer.middleware.js';
 import { verifyJwt } from '../middlewares/auth.middleware.js';
@@ -26,4 +27,5 @@ router.route('/profile').get(verifyJwt, getUserProfile);
 // Update User Profile (Protected Route)
 router.route('/update-profile').put(verifyJwt, updateUserProfile);
 
+router.route('/refresh-token').post(verifyJwt, AccessRefreshToken);
 export default router;

@@ -1,21 +1,23 @@
 import { useState, useEffect, useContext } from "react";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
-import HomeSlider from "./HomeSlider";
 import Login from "./Login";
 import UserRegistration from "./UserRegistration";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
+import SupplierRegistration from "./SupplierRegistration";
 
 export default function Dashboard() {
   const { 
     isSidebarOpen, setIsSidebarOpen, 
     sideNavSelect, setSideNavSelect, 
     isLoginOpen, setIsLoginOpen, 
-    isRegisterOpen, setIsRegisterOpen 
+    isRegisterOpen, setIsRegisterOpen ,
+    isSupplierOpen, setIsSupplierOpen
   } = useContext(AppContext);
   
   const navigate = useNavigate()
+  //side Nav Selection
   const handleSideNav = (value) => {
     setSideNavSelect(value);
     
@@ -48,17 +50,8 @@ export default function Dashboard() {
 
   useEffect(() => {
     document.body.style.overflow =
-      isLoginOpen || isRegisterOpen ? "hidden" : "auto";
-    if (isLoginOpen || isRegisterOpen) {
-      if (isLoginOpen || isRegisterOpen) {
-        document.body.addEventListener("click", function () {
-          event.stopPropagation();
-          setIsLoginOpen(false);
-          setIsRegisterOpen(false);
-        });
-      }
-    }
-  }, [isLoginOpen, isRegisterOpen, setIsLoginOpen, setIsRegisterOpen]);
+      isLoginOpen || isRegisterOpen || isSidebarOpen ? "hidden" : "auto";
+  }, [isLoginOpen, isRegisterOpen, isSidebarOpen]);
 
   return (
     <div className="w-full">
@@ -106,6 +99,24 @@ export default function Dashboard() {
               ✖
             </button>
             <UserRegistration />
+          </div>
+        </div>
+      )}
+       {isSupplierOpen && (
+        <div
+          className={`fixed top-0 left-0 w-full h-full bg-[#22222282] flex justify-center items-center z-50`}
+        >
+          <div
+            onClick={handlePopUp}
+            className="bg-gray-800 shadow-lg relative w-[80%] max-w-md rounded-2xl"
+          >
+            <button
+              className="absolute top-4 right-4 text-gray-600 cursor-pointer hover:text-gray-900 text-xl z-40"
+              onClick={() => setIsSupplierOpen(false)}
+            >
+              ✖
+            </button>
+            <SupplierRegistration />
           </div>
         </div>
       )}
