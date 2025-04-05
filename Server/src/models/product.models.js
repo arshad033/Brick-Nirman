@@ -34,7 +34,7 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
     image: {
-      type: [String], // Array of image URL
+      type: String, // Array of image URL
     },
     supplierId: {
       type: mongoose.Schema.Types.ObjectId,
