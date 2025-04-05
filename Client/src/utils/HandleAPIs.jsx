@@ -20,7 +20,7 @@ export const fetchProducts = async (setProduct) => {
 };
 
 
-export const registerUser = async (userInputData, setResponse) => {
+export const registerUser = async (userInputData,setUser) => {
     try {
         const response = await fetch(`${apiUrl}/users/register`, {
             method: 'POST',
@@ -32,14 +32,14 @@ export const registerUser = async (userInputData, setResponse) => {
 
         const result = await response.json();
         if (result?.data) {
-            setResponse(result); // ✅ Update state inside component
+            setUser(result.data); // ✅ Update state inside component
         }
     } catch (error) {
         console.error("Error registering user:", error);
     }
 };
 
-export const loginUser = async (loginData, setUser) => {
+export const loginUser = async (loginData, setUser,setIsLoginOpen) => {
     try {
         const response = await fetch(`${apiUrl}/users/login`, {
             method: 'POST',
@@ -53,6 +53,8 @@ export const loginUser = async (loginData, setUser) => {
         const result = await response.json();
         if (result?.data) {
             setUser(result.data); // ✅ Update state inside component
+            setIsLoginOpen(false); // ✅ Reload page to reflect changes
+            localStorage.setItem("username", result.data.fullName);
         }
     } catch (error) {
         console.error("Error logging in:", error);
@@ -64,11 +66,16 @@ export const logoutUser = async (setResponse) => {
         const response = await fetch(`${apiUrl}/users/logout`, {
             method: 'POST',
             credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            }
         });
 
         const result = await response.json();
-        if (result?.status === 200) {
+        if (result?.statusCode === 200) {
+            console.log("User logged out successfully")
             setResponse(result); // ✅ Update state inside component
+            localStorage.removeItem("username");
         }
     } catch (error) {
         console.error("Error logging out:", error);
@@ -114,7 +121,7 @@ export const updateUserProfile = async (updatedData, setUpdatedUser) => {
     }
 };
 
-export const refreshTokens = async (setTokens) => {
+export const refreshTokens = async (setUser) => {
     try {
         const response = await fetch(`${apiUrl}/users/refresh-token`, {
             method: 'POST',
@@ -123,7 +130,10 @@ export const refreshTokens = async (setTokens) => {
 
         const result = await response.json();
         if (result?.data) {
-            setTokens(result.data); // ✅ Update state inside component
+            setUser(result.data); // ✅ Update state inside component
+        }
+        else{
+            localStorage.removeItem("username");
         }
     } catch (error) {
         console.error("Error refreshing tokens:", error);
