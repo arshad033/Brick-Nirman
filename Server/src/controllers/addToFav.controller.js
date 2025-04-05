@@ -5,16 +5,16 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 
 // ✅ Add to Favorites
 export const addToFavorites = asyncHandler(async (req, res) => {
-  const { productId, supplierId } = req.body;
+  const { productId } = req.body;
 
-  if (!productId && !supplierId) {
-    throw new ApiError(400, 'Product ID or Supplier ID is required');
+  if (!productId) {
+    throw new ApiError(400, 'Product ID is required');
   }
 
   const userId = req.user._id;
 
   // ✅ Check if already in favorites
-  let existingFav = await AddToFav.findOne({ userId, productId, supplierId });
+  let existingFav = await AddToFav.findOne({ userId, productId });
 
   if (existingFav) {
     throw new ApiError(409, 'Already in favorites');
@@ -23,7 +23,6 @@ export const addToFavorites = asyncHandler(async (req, res) => {
   const favorite = await AddToFav.create({
     userId,
     productId: productId || null,
-    supplierId: supplierId || null,
   });
 
   res
