@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Eye, EyeOff, Mail, Lock, User, Phone } from "lucide-react";
 import { registerUser } from "../utils/HandleAPIs";
 import { AppContext } from "../context/AppContext";
+import SupplierRegistration from "./SupplierRegistration.jsx";
 
 const Registration = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,23 +13,25 @@ const Registration = () => {
   const [role, setRole] = useState("user");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const {user, setUser} = useContext(AppContext)
+  const { setIsRegisterOpen, setIsSupplierOpen } = useContext(AppContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const userInputData = {
-      fullName:name,
+      fullName: name,
       email,
       phone,
       role,
       password,
       confirmPassword,
     };
-    registerUser(userInputData, setUser);
-
-    // Add your registration logic here
+    registerUser(userInputData, (data) => {
+      if (data?.data?.role === "supplier") {
+        setIsRegisterOpen(false);
+        setIsSupplierOpen(true);
+      }
+    });
   };
-  console.log(user)
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -127,12 +130,8 @@ const Registration = () => {
             required
             className="w-full  pl-3 py-2 bg-blue-500/10 rounded-xl border border-blue-500 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
-            <option value="user" className="bg-blue-900">
-              User
-            </option>
-            <option value="supplier" className="bg-blue-900">
-              Supplier
-            </option>
+            <option value="user" className="bg-blue-900">User</option>
+            <option value="supplier" className="bg-blue-900">Supplier</option>
           </select>
         </div>
 
@@ -143,15 +142,6 @@ const Registration = () => {
           Sign Up
         </button>
       </form>
-
-      <div className="mt-6 text-center">
-        <p className="text-sm text-blue-300">
-          Already have an account?{" "}
-          <a href="#" className="text-blue-400 hover:text-blue-300">
-            Sign In
-          </a>
-        </p>
-      </div>
     </div>
   );
 };

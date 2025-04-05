@@ -7,18 +7,17 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const {user, setUser} = useContext(AppContext)
-  console.log(user)
+  const {setUser,setIsLoginOpen} = useContext(AppContext)
   const handleSubmit = (e) => {
     e.preventDefault();
     const loginData = { email, password };
-    loginUser(loginData,setUser); // Assuming setUser is defined in your context or state management
+    loginUser(loginData,setUser,setIsLoginOpen); // Assuming setUser is defined in your context or state management
   };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
+  
   return (
     <div className="w-full max-w-md mx-auto p-6 rounded-2xl backdrop-blur-lg bg-blue-500/20 shadow-2xl border border-blue-500 z-30">
       <div className="text-center mb-6">
