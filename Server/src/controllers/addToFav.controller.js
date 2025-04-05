@@ -34,9 +34,10 @@ export const addToFavorites = asyncHandler(async (req, res) => {
 export const getFavorites = asyncHandler(async (req, res) => {
   const userId = req.user._id;
 
-  const favorites = await AddToFav.find({ userId })
-    .populate('productId', 'name price image size')
-    .populate('supplierId', 'name email');
+  const favorites = await AddToFav.find({ userId }).populate(
+    'productId',
+    'name price image size'
+  );
 
   if (!favorites.length) {
     throw new ApiError(404, 'No favorites found');
