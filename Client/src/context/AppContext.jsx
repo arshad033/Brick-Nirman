@@ -6,28 +6,42 @@ export const AppContext = createContext();
 
 // ✅ Create Provider Component
 export const AppProvider = ({ children }) => {
-    const [product, setProduct] = useState(null);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const [sideNavSelect, setSideNavSelect] = useState("Home");
-    const [isLoginOpen, setIsLoginOpen] = useState(false);
-    const [isRegisterOpen, setIsRegisterOpen] = useState(false);
-    const [user, setUser]=useState(null);
-    const [userRegisterData, setUserRegisterData]=useState(null);
-    const [isSupplierOpen, setIsSupplierOpen] = useState(false);
-    const [suppliers, setSuppliers] = useState(null);
-    return (
-        <AppContext.Provider value={{ 
-            product, setProduct, 
-            isSidebarOpen, setIsSidebarOpen, 
-            sideNavSelect, setSideNavSelect, 
-            isLoginOpen, setIsLoginOpen, 
-            isRegisterOpen, setIsRegisterOpen,
-            user, setUser ,
-            userRegisterData, setUserRegisterData,
-            isSupplierOpen, setIsSupplierOpen,
-            suppliers, setSuppliers
-        }}>
-            {children}
-        </AppContext.Provider>
-    );
+  const [product, setProduct] = useState(null);
+  const [favProduct, setFavProduct] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [sideNavSelect, setSideNavSelect] = useState("Home");
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+  const [user, setUser] = useState(null);
+  const [userRegisterData, setUserRegisterData] = useState(null);
+  const [isSupplierOpen, setIsSupplierOpen] = useState(false);
+  const [suppliers, setSuppliers] = useState(null);
+  return (
+    <AppContext.Provider
+      value={{
+        product,
+        setProduct,
+        favProduct,
+        setFavProduct,
+        isSidebarOpen,
+        setIsSidebarOpen,
+        sideNavSelect,
+        setSideNavSelect,
+        isLoginOpen,
+        setIsLoginOpen,
+        isRegisterOpen,
+        setIsRegisterOpen,
+        user,
+        setUser,
+        userRegisterData,
+        setUserRegisterData,
+        isSupplierOpen,
+        setIsSupplierOpen,
+        suppliers,
+        setSuppliers,
+      }}
+    >
+      {children}
+    </AppContext.Provider>
+  );
 };
