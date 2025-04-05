@@ -12,6 +12,8 @@ export const AppProvider = ({ children }) => {
     const [isLoginOpen, setIsLoginOpen] = useState(false);
     const [isRegisterOpen, setIsRegisterOpen] = useState(false);
     const [user, setUser]=useState(null);
+    const [userRegisterData, setUserRegisterData]=useState(null);
+    const [isSupplierOpen, setIsSupplierOpen] = useState(false);
 
     return (
         <AppContext.Provider value={{ 
@@ -20,7 +22,9 @@ export const AppProvider = ({ children }) => {
             sideNavSelect, setSideNavSelect, 
             isLoginOpen, setIsLoginOpen, 
             isRegisterOpen, setIsRegisterOpen,
-            user, setUser 
+            user, setUser ,
+            userRegisterData, setUserRegisterData,
+            isSupplierOpen, setIsSupplierOpen,
         }}>
             {children}
         </AppContext.Provider>
