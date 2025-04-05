@@ -48,6 +48,25 @@ export const getFavorites = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, favorites, 'Favorites retrieved successfully'));
 });
 
+// ✅ Check if Product is in Favorites
+export const checkFavorite = asyncHandler(async (req, res) => {
+  const { productId } = req.query;
+
+  if (!productId) {
+    throw new ApiError(400, 'Product ID is required');
+  }
+
+  const userId = req.user._id;
+
+  const isFavorited = await AddToFav.exists({ userId, productId });
+
+  res
+    .status(200)
+    .json(
+      new ApiResponse(200, { isFavorited: !!isFavorited }, 'Check complete')
+    );
+});
+
 // ✅ Remove from Favorites
 export const removeFromFavorites = asyncHandler(async (req, res) => {
   const { productId, supplierId } = req.body;
