@@ -32,12 +32,24 @@ export const getAllSuppliers = async (setSuppliers) => {
 };
 
 
-export const getSupplierById = async (id, setSupplier) => {
+export const getSupplierById = async (id, setSupplier,setCheckSuppliers) => {
     try {
-        const response = await fetch(`${apiUrl}/suppliers/${id}`);
+        const response = await fetch(`${apiUrl}/suppliers/${id}`,{
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
         const result = await response.json();
         if (result?.data) {
             setSupplier(result.data);
+            if(result.statusCode === 200) {
+                setCheckSuppliers(true);
+            }
+            else {
+                setCheckSuppliers(false);
+            }
         }
     } catch (error) {
         console.error("Error fetching supplier:", error);
