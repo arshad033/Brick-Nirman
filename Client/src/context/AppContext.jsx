@@ -17,6 +17,8 @@ export const AppProvider = ({ children }) => {
   const [userRegisterData, setUserRegisterData] = useState(null);
   const [isSupplierOpen, setIsSupplierOpen] = useState(false);
   const [suppliers, setSuppliers] = useState(null);
+  const [checkSuppliers, setCheckSuppliers] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   return (
     <AppContext.Provider
       value={{
@@ -42,6 +44,10 @@ export const AppProvider = ({ children }) => {
         setIsSupplierOpen,
         suppliers,
         setSuppliers,
+        checkSuppliers,
+        setCheckSuppliers,
+        searchTerm,
+        setSearchTerm,
       }}
     >
       {children}

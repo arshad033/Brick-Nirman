@@ -4,7 +4,7 @@ import { AppContext } from "../context/AppContext";
 import { fetchProducts } from "../utils/HandleAPIs";
 
 const ProductPage = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const {searchTerm, setSearchTerm} = useContext(AppContext);
   const [sortOrder, setSortOrder] = useState("Newest");
   const { product,setProduct } = useContext(AppContext);
 
