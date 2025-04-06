@@ -55,6 +55,8 @@ export const loginUser = async (loginData, setUser,setIsLoginOpen) => {
         if (result?.data) {
             setUser(result.data); // ✅ Update state inside component
             setIsLoginOpen(false); // ✅ Reload page to reflect changes
+            localStorage.removeItem("userId")
+            localStorage.setItem("userId", result.data._id);
             localStorage.setItem("username", result.data.fullName);
         }
     } catch (error) {
@@ -77,6 +79,7 @@ export const logoutUser = async (setResponse) => {
             console.log("User logged out successfully")
             setResponse(result); // ✅ Update state inside component
             localStorage.removeItem("username");
+            localStorage.removeItem("userId", result.data._id);
         }
     } catch (error) {
         console.error("Error logging out:", error);
