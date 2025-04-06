@@ -4,8 +4,7 @@ import { registerSupplier } from "../utils/HandleSupplier";
 import { AppContext } from "../context/AppContext";
 
 const SupplierRegistration = () => {
-
-  const {setIsSupplierOpen} = useContext(AppContext)
+  const { setIsSupplierOpen } = useContext(AppContext);
   const [name, setName] = useState("");
   const [gstNumber, setGstNumber] = useState("");
   const [phone, setPhone] = useState("");
@@ -44,30 +43,33 @@ const SupplierRegistration = () => {
   // Function to handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-   const supplierId = localStorage.getItem('userId')
-    const supplierData ={
+    const supplierId = localStorage.getItem("userId");
+    const supplierData = {
       supplierId,
       name,
       gstNumber,
       phone,
       email,
       address,
-      serviceArea
-    }
-    // 
-    registerSupplier(supplierData,setIsSupplierOpen)
+      serviceArea,
+    };
+    //
+    registerSupplier(supplierData, setIsSupplierOpen);
   };
 
   return (
-    <div className="w-full max-w-md mx-auto p-6 rounded-2xl backdrop-blur-lg bg-blue-500/20 shadow-2xl border border-blue-500">
+    <div className="w-full max-w-4xl mx-auto p-10 rounded-2xl backdrop-blur-lg bg-blue-500/20 shadow-2xl border border-blue-500">
       <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold text-white">Supplier Registration</h2>
+        <h2 className="text-3xl font-bold text-white">Supplier Registration</h2>
         <p className="text-sm text-blue-300">
           Register your business as a supplier
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form
+        onSubmit={handleSubmit}
+        className="grid grid-cols-1 md:grid-cols-2 gap-6"
+      >
         <div className="relative">
           <User className="absolute top-2/4 left-3 transform -translate-y-1/2 text-blue-400" />
           <input
@@ -115,9 +117,10 @@ const SupplierRegistration = () => {
             className="w-full pl-10 py-2 bg-blue-500/10 rounded-xl border border-blue-500 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
         </div>
-        <div className="space-y-3">
+
+        <div className="col-span-full space-y-4">
           <h3 className="text-white">Address</h3>
-          <div className="relative">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
               type="text"
               name="street"
@@ -125,10 +128,8 @@ const SupplierRegistration = () => {
               onChange={handleAddressChange}
               placeholder="Street"
               required
-              className="w-full py-2 pl-2 bg-blue-500/10 rounded-xl border border-blue-500 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full py-2 px-4 bg-blue-500/10 rounded-xl border border-blue-500 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
-          </div>
-          <div className="relative">
             <input
               type="text"
               name="city"
@@ -136,10 +137,8 @@ const SupplierRegistration = () => {
               onChange={handleAddressChange}
               placeholder="City"
               required
-              className="w-full pl-2 py-2 bg-blue-500/10 rounded-xl border border-blue-500 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full py-2 px-4 bg-blue-500/10 rounded-xl border border-blue-500 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
-          </div>
-          <div className="relative">
             <input
               type="text"
               name="state"
@@ -147,10 +146,8 @@ const SupplierRegistration = () => {
               onChange={handleAddressChange}
               placeholder="State"
               required
-              className="w-full pl-2 py-2 bg-blue-500/10 rounded-xl border border-blue-500 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full py-2 px-4 bg-blue-500/10 rounded-xl border border-blue-500 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
-          </div>
-          <div className="relative">
             <input
               type="text"
               name="zip"
@@ -158,10 +155,8 @@ const SupplierRegistration = () => {
               onChange={handleAddressChange}
               placeholder="Zip Code"
               required
-              className="w-full pl-2 py-2 bg-blue-500/10 rounded-xl border border-blue-500 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full py-2 px-4 bg-blue-500/10 rounded-xl border border-blue-500 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
-          </div>
-          <div className="relative">
             <input
               type="text"
               name="country"
@@ -169,12 +164,12 @@ const SupplierRegistration = () => {
               onChange={handleAddressChange}
               placeholder="Country"
               disabled
-              className="w-full pl-2 py-2 bg-blue-500/10 rounded-xl border border-blue-500 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full py-2 px-4 bg-blue-500/10 rounded-xl border border-blue-500 text-white focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
           </div>
         </div>
-        {/* Service Area Input with Tags */}
-        <div>
+
+        <div className="col-span-full">
           <h3 className="text-white mb-2">
             Service Areas (Type and press Enter)
           </h3>
@@ -186,6 +181,7 @@ const SupplierRegistration = () => {
               >
                 {area}
                 <button
+                  type="button"
                   onClick={() => removeArea(index)}
                   className="text-red-500 ml-1"
                 >
@@ -204,12 +200,14 @@ const SupplierRegistration = () => {
           </div>
         </div>
 
-        <button
-          type="submit"
-          className="w-full py-2 mt-4 bg-blue-500 rounded-xl text-white font-bold hover:bg-blue-600 transition-colors"
-        >
-          Register as Supplier
-        </button>
+        <div className="col-span-full">
+          <button
+            type="submit"
+            className="w-full py-3 bg-blue-500 rounded-xl text-white font-bold hover:bg-blue-600 transition-colors"
+          >
+            Register as Supplier
+          </button>
+        </div>
       </form>
     </div>
   );
