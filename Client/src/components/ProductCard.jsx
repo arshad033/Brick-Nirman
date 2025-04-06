@@ -1,16 +1,20 @@
-import { Star } from "lucide-react";
-import { Heart } from "lucide-react";
-import { useState } from "react";
+import { Star, Heart, ShoppingCart } from "lucide-react";
+import { useState, useEffect } from "react";
 import {
   RemoveFavProducts,
   AddFavProducts,
   checkFav,
 } from "../utils/HandleProductAPIs";
-import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function ProductCard({ product }) {
   const [isFavorited, setIsFavorited] = useState(false);
   const [hover, setHover] = useState(false);
+  const navigate = useNavigate(); // ✅ Get the navigate function
+
+  const handleViewDetails = () => {
+    navigate(`/product/${product._id}`); // ✅ Programmatic navigation
+  };
   const renderRatingStars = (rating) => {
     const stars = [];
     const fullStars = Math.floor(rating);
@@ -40,20 +44,27 @@ function ProductCard({ product }) {
 
     return stars;
   };
+
   useEffect(() => {
-    checkFav(product._id, setIsFavorited);
+    const userId = localStorage.getItem("userId");
+    console.log(userId);
+    if (userId) {
+      checkFav(product._id, setIsFavorited);
+    }
   }, [setIsFavorited]);
+
   const toggleFavorite = () => {
-    console.log("clicked");
     isFavorited ? RemoveFavProducts(product._id) : AddFavProducts(product._id);
     setIsFavorited(!isFavorited);
   };
+
   return (
     <div
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       className="relative w-[20rem] h-[22rem] bg-gray-800 rounded-2xl border border-gray-500 shadow-lg overflow-hidden p-4"
     >
+      {/* Favorite Icon */}
       <button
         onClick={toggleFavorite}
         className="absolute top-3 right-3 bg-white/10 hover:bg-white/20 p-1.5 rounded-full z-10"
@@ -68,6 +79,12 @@ function ProductCard({ product }) {
         />
       </button>
 
+      {/* Cart Icon */}
+      <button className="absolute top-3 left-3 bg-white/10 hover:bg-white/20 p-1.5 rounded-full z-10">
+        <ShoppingCart size={22} className="text-white drop-shadow" />
+      </button>
+
+      {/* Product Image */}
       <div
         className={`${
           hover ? `scale-[1]` : `scale-[0.85]`
@@ -80,6 +97,7 @@ function ProductCard({ product }) {
         />
       </div>
 
+      {/* Product Info */}
       <div className="p-2">
         <div className="flex items-center justify-between py-1">
           <h2 className="text-xl font-bold text-orange-300">{product.name}</h2>
@@ -89,14 +107,19 @@ function ProductCard({ product }) {
         </div>
         <div className="flex items-center justify-between py-1">
           <span className="text-lg font-semibold">Rs.{product.price}</span>
-          <div className="flex items-center ">
+          <div className="flex items-center">
             {renderRatingStars(product.rating)}
             <span className="ml-2 text-white text-sm">{product.rating}</span>
           </div>
         </div>
+
+        {/* View Details Button */}
         <div className="flex items-center justify-center">
-          <button className="bg-blue-600 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
-            Add to Cart
+          <button
+            onClick={handleViewDetails}
+            className="bg-blue-600 cursor-pointer text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+          >
+            View Details
           </button>
         </div>
       </div>

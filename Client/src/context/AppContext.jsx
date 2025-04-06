@@ -7,6 +7,7 @@ export const AppContext = createContext();
 // ✅ Create Provider Component
 export const AppProvider = ({ children }) => {
   const [product, setProduct] = useState(null);
+  const [productById, setProductById] = useState(null);
   const [favProduct, setFavProduct] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [sideNavSelect, setSideNavSelect] = useState("Home");
@@ -21,6 +22,8 @@ export const AppProvider = ({ children }) => {
       value={{
         product,
         setProduct,
+        productById,
+        setProductById,
         favProduct,
         setFavProduct,
         isSidebarOpen,
