@@ -1,5 +1,5 @@
 import { FaHome, FaUsers, FaFile, FaHeart } from "react-icons/fa";
-import { IoCloseSharp, logo, FaCartShopping } from "../assets/assets.js";
+import { IoCloseSharp, logo, FaCartShopping, ShoppingBasket } from "../assets/assets.js";
 import { logoutUser } from "../utils/HandleAPIs.jsx";
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext.jsx";
@@ -21,6 +21,7 @@ export default function Sidebar({
       setIsSidebarOpen(false);
       setUser(null);
       setResponse(null);
+      window.location.reload();
     }
   }, [setIsSidebarOpen, setUser, userLogout]);
 
@@ -60,6 +61,7 @@ export default function Sidebar({
             { name: "Favorites", icon: <FaHeart /> },
             { name: "Carts", icon: <FaCartShopping /> },
             { name: "Orders", icon: <FaFile /> },
+            { name: "Products", icon: <ShoppingBasket /> },
           ].map((item) => (
             <li
               key={item.name}

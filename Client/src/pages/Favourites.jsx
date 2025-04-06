@@ -6,7 +6,12 @@ import { fetchFavProducts } from "../utils/HandleProductAPIs";
 function Favourites() {
   const { favProduct, setFavProduct } = useContext(AppContext);
   useEffect(() => {
-    fetchFavProducts(setFavProduct);
+    const userId = localStorage.getItem("userId");
+    console.log(userId);
+    
+    if (userId) {
+      fetchFavProducts(setFavProduct);
+    }
   }, [setFavProduct]);
   console.log(favProduct);
 
