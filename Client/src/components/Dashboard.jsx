@@ -20,28 +20,21 @@ export default function Dashboard() {
   //side Nav Selection
   const handleSideNav = (value) => {
     setSideNavSelect(value);
-    
-    if(value == "Home")
-    {
-       navigate('/')
-    }
-    else if(value == "Supplier")
-    {
-       navigate('/suppliers')
-    }
-    else if(value == "Favorites")
-    {
-       navigate('/favourites')
-    }
-    else if(value == "Carts")
-    {
-       navigate('/carts')
-    }
-    else if(value == "Orders")
-    {
-       navigate('/orders')
+  
+    const routes = {
+      Home: '/',
+      Supplier: '/suppliers',
+      Favorites: '/favourites',
+      Carts: '/carts',
+      Orders: '/orders',
+      Products: '/products',
+    };
+  
+    if (routes[value]) {
+      navigate(routes[value]);
     }
   };
+  
   const [PopUp, setPopUp] = useState(true);
   const handlePopUp = (event) => {
     event.stopPropagation();
