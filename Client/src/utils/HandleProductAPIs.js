@@ -17,6 +17,24 @@ export const fetchFavProducts = async (setFavProduct) => {
     console.error("Error fetching favorite products:", error);
   }
 };
+export const fetchProductDetails = async (id, setProduct) => {
+  try {
+    const response = await fetch(`${apiUrl}/products/get-product/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    const result = await response.json();
+
+    if (result?.data) {
+      setProduct(result.data); // ✅ Update state inside component
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
 export const checkFav = async (productId, setIsFavorited) => {
   try {
     const response = await fetch(
