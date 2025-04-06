@@ -2,9 +2,6 @@ import React from "react";
 import { Star, CheckCircle } from "lucide-react";
 
 const SupplierCard = ({supplier}) => {
-  
-console.log(supplier);
-
   const renderRatingStars = (rating) => {
     const stars = [];
     const fullStars = Math.floor(rating);
