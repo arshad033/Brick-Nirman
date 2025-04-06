@@ -2,15 +2,24 @@ import React, { useContext, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import { fetchProductDetails } from "../utils/HandleProductAPIs";
+import { getSupplierById } from "../utils/HandleSupplier";
 
 function ProductDetailsPage() {
   const { id } = useParams(); // ✅ useParams inside the component
   const navigate = useNavigate(); // ✅ navigate for going back
-  const { productById, setProductById } = useContext(AppContext);
+  const { productById, setProductById ,suppliers, setSuppliers} = useContext(AppContext);
+ 
+  const handleProfile = () => {
+    getSupplierById(productById?.supplierId,setSuppliers);
+    navigate(`/supplier-profile/${productById?.supplierId}`)
+  }
+  console.log(suppliers);
+  
 
   useEffect(() => {
     fetchProductDetails(id, setProductById);
-  }, [id]);
+  }, [id, setProductById]);
+console.log("Prodect"+productById);
 
   if (!productById) {
     return (
@@ -73,7 +82,7 @@ function ProductDetailsPage() {
             <button
               className="bg-gray-700 hover:bg-gray-600 text-white text-lg px-6 py-3 rounded-md transition"
               onClick={() =>
-                navigate(`/supplier/${productById?.supplierId?._id}`)
+                handleProfile()
               }
             >
               View Supplier Profile
