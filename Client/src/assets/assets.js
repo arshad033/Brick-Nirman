@@ -9,6 +9,8 @@ import { FaCartShopping } from "react-icons/fa6";
 import { FaHeart } from "react-icons/fa";
 import { FaGooglePlay } from "react-icons/fa";
 import { IoIosAppstore } from "react-icons/io";
+import { RiErrorWarningLine } from "react-icons/ri";
+import { ShoppingBasket } from 'lucide-react';
 
 export {
     slider_img1,
@@ -21,5 +23,7 @@ export {
     FaCartShopping,
     FaHeart,
     FaGooglePlay,
-    IoIosAppstore
+    IoIosAppstore,
+    RiErrorWarningLine,
+    ShoppingBasket,
 }
