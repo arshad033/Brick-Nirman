@@ -11,7 +11,7 @@ import Favourites from "./pages/Favourites.jsx";
 import ContactUs from "./pages/ContactUs.jsx";
 import AboutUs from "./pages/AboutUs.jsx";
 import Cart from "./pages/Cart.jsx";
-// import SupplierProfile from "./pages/SupplierProfile";
+import SupplierProfile from "./pages/SupplierProfile";
 import ProductDetailsPage from "./pages/ProductDetailsPage.jsx";
 
 function App() {
