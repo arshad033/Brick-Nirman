@@ -61,6 +61,7 @@ export default function Navbar({ setIsSidebarOpen, setIsLoginOpen, setIsRegister
   
   const [supplierBtn, setSupplierBtn] = useState(false);
   useEffect(() => {
+    getSupplierById(supplierId, setSupplier,setCheckSuppliers);
     if(!supplierId){
       setSupplierBtn(false);
     }
@@ -70,7 +71,7 @@ export default function Navbar({ setIsSidebarOpen, setIsLoginOpen, setIsRegister
     else{
       setSupplierBtn(false);
     }
-  },[checkSuppliers, supplierId])
+  },[checkSuppliers, setCheckSuppliers, supplierId])
 
   return (
     <>
