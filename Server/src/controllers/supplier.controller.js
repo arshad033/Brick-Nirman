@@ -3,7 +3,7 @@ import { User } from '../models/user.model.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { ApiError } from '../utils/ApiError.js';
-
+import { uploadOnCloudinary } from '../utils/cloudinary.js';
 // Create a new supplier
 export const createSupplier = asyncHandler(async (req, res) => {
   const { supplierId, name, gstNumber, phone, email, address, serviceArea } =
@@ -59,7 +59,7 @@ export const getSupplierById = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const supplierId = id
   
-  const supplier = await Supplier.findById(supplierId);
+  const supplier = await Supplier.find({supplierId: supplierId});
 
   if (!supplier) {
     throw new ApiError(404, 'Supplier not found');
@@ -74,11 +74,26 @@ export const getSupplierById = asyncHandler(async (req, res) => {
 export const updateSupplier = asyncHandler(async (req, res) => {
   const { name, gstNumber, phone, email, address, serviceArea } = req.body;
   const supplier = await Supplier.findOne({ supplierId: req.user?._id });
+  let avatarUrl;
+  if (req.file) {
+    const avatarLocalPath = req.file.path;
+    console.log(avatarLocalPath);
 
+    const avatarResponse = await uploadOnCloudinary(avatarLocalPath);
+    console.log('avatarResponse: ', avatarResponse);
+
+    if (!avatarResponse) {
+      throw new ApiError(500, 'Failed to upload avatar file');
+    }
+
+    avatarUrl = avatarResponse.url;
+  }
   if (!supplier) {
     throw new ApiError(404, 'Supplier not found');
   }
-
+  if (avatarUrl) {
+    supplier.image = avatarUrl;
+  }
   if (name) {
     supplier.name = name;
   }
