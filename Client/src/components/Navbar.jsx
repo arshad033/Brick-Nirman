@@ -7,12 +7,14 @@ import { refreshTokens } from "../utils/HandleAPIs";
 import { getSupplierById } from "../utils/HandleSupplier";
 import PopUp_Message from "./PopUp_Message";
 import { RiErrorWarningLine } from "../assets/assets.js";
+import { fetchProductsBySupplierId } from "../utils/HandleProductAPIs.js";
 
 export default function Navbar({
   setIsSidebarOpen,
   setIsLoginOpen,
   setIsRegisterOpen,
 }) {
+
   const {
     user,
     setUser,
@@ -21,6 +23,7 @@ export default function Navbar({
     setIsSupplierOpen,
     searchTerm,
     setSearchTerm,
+    setSupplierProducts
   } = useContext(AppContext);
   const navigate = useNavigate();
   const UserLoggedIn = !!user;
@@ -54,8 +57,10 @@ export default function Navbar({
   const [supplier, setSupplier] = useState(null);
   const [showMsg, setshowMsg] = useState(false);
   const supplierId = localStorage.getItem("userId");
+
   const handleProfile = () => {
     getSupplierById(supplierId, setSupplier, setCheckSuppliers);
+    fetchProductsBySupplierId(supplierId, setSupplierProducts);
     if (checkSuppliers) {
       navigate(`/supplier-profile/${supplierId}`);
       setshowMsg(false);
@@ -68,11 +73,11 @@ export default function Navbar({
   };
 
   console.log(supplier);
-  console.log("supplier :" + supplierId);
 
   const [supplierBtn, setSupplierBtn] = useState(false);
   useEffect(() => {
     getSupplierById(supplierId, setSupplier, setCheckSuppliers);
+  
     if (!supplierId) {
       setSupplierBtn(false);
     } else if (!checkSuppliers) {
