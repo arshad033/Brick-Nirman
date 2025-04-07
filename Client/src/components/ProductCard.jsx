@@ -4,11 +4,15 @@ import {
   RemoveFavProducts,
   AddFavProducts,
   checkFav,
+  AddCartProduct,
+  RemoveCartProduct,
+  checkCart,
 } from "../utils/HandleProductAPIs";
 import { useNavigate } from "react-router-dom";
 
 function ProductCard({ product }) {
   const [isFavorited, setIsFavorited] = useState(false);
+  const [isCarted, setIsCarted] = useState(false);
   const [hover, setHover] = useState(false);
   const navigate = useNavigate(); // ✅ Get the navigate function
 
@@ -50,12 +54,19 @@ function ProductCard({ product }) {
     console.log(userId);
     if (userId) {
       checkFav(product._id, setIsFavorited);
+      checkCart(product._id, setIsCarted);
     }
-  }, [setIsFavorited]);
+  }, [setIsFavorited, setIsCarted]);
 
   const toggleFavorite = () => {
     isFavorited ? RemoveFavProducts(product._id) : AddFavProducts(product._id);
     setIsFavorited(!isFavorited);
+  };
+  const toggleCart = () => {
+    isCarted
+      ? RemoveCartProduct(product._id)
+      : AddCartProduct(product._id, product.price);
+    setIsCarted(!isCarted);
   };
 
   return (
@@ -80,8 +91,16 @@ function ProductCard({ product }) {
       </button>
 
       {/* Cart Icon */}
-      <button className="absolute top-3 left-3 bg-white/10 hover:bg-white/20 p-1.5 rounded-full z-10">
-        <ShoppingCart size={22} className="text-white drop-shadow" />
+      <button
+        onClick={toggleCart}
+        className="absolute top-3 left-3 bg-white/10 hover:bg-white/20 p-1.5 rounded-full z-10"
+      >
+        <ShoppingCart
+          size={22}
+          className={`drop-shadow ${
+            isCarted ? "text-green-500" : "text-white"
+          }`}
+        />
       </button>
 
       {/* Product Image */}
