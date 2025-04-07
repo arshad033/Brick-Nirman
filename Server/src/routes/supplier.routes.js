@@ -6,6 +6,7 @@ import {
   updateSupplier,
   deleteSupplier,
 } from '../controllers/supplier.controller.js';
+import { upload } from '../middlewares/multer.middleware.js';
 import { verifyJwt } from '../middlewares/auth.middleware.js';
 
 const router = Router();
@@ -20,7 +21,7 @@ router.route('/').get(getAllSuppliers);
 router.route('/:id').get(getSupplierById);
 
 // Update a supplier
-router.route('/update').put(verifyJwt, updateSupplier);
+router.route('/update').put(upload.single('avatar'),verifyJwt, updateSupplier);
 
 // Delete a supplier
 router.route('/delete').delete(verifyJwt, deleteSupplier);
