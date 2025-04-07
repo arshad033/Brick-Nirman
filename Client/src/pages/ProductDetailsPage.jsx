@@ -1,25 +1,26 @@
 import React, { useContext, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
-import { fetchProductDetails } from "../utils/HandleProductAPIs";
+import { fetchProductDetails, fetchProductsBySupplierId } from "../utils/HandleProductAPIs";
 import { getSupplierById } from "../utils/HandleSupplier";
 
 function ProductDetailsPage() {
   const { id } = useParams(); // ✅ useParams inside the component
   const navigate = useNavigate(); // ✅ navigate for going back
-  const { productById, setProductById ,suppliers, setSuppliers} = useContext(AppContext);
+  const { productById, setProductById , setSuppliers,setSupplierProducts} = useContext(AppContext);
  
   const handleProfile = () => {
-    getSupplierById(productById?.supplierId,setSuppliers);
-    navigate(`/supplier-profile/${productById?.supplierId}`)
+    getSupplierById(productById?.supplier?.supplierId,setSuppliers);
+    fetchProductsBySupplierId(productById?.supplier?.supplierId, setSupplierProducts);
+    navigate(`/supplier-profile/${productById?.supplier?.supplierId}`)
   }
-  console.log(suppliers);
-  
-
+  console.log("this is the productById details page: ", productById?.product);
+  console.log(productById);
+ 
   useEffect(() => {
     fetchProductDetails(id, setProductById);
   }, [id, setProductById]);
-console.log("Prodect"+productById);
+
 
   if (!productById) {
     return (
@@ -28,16 +29,14 @@ console.log("Prodect"+productById);
       </div>
     );
   }
-  console.log("this is the productById details page: ", productById);
-
   return (
     <div className="min-h-screen bg-gray-900 text-white px-4 py-10">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-10">
         {/* Product Image */}
         <div className="w-full md:w-[40%]">
           <img
-            src={productById.image}
-            alt={productById.name}
+            src={productById?.product.image}
+            alt={productById?.product.name}
             className="w-full h-[400px] object-cover rounded-md"
           />
         </div>
@@ -45,33 +44,33 @@ console.log("Prodect"+productById);
         {/* Product Info */}
         <div className="w-full md:w-[60%] flex flex-col gap-4">
           <h1 className="text-4xl font-bold text-orange-400">
-            {productById.name}
+            {productById?.product.name}
           </h1>
-          <p className="text-lg text-gray-300">{productById.description}</p>
+          <p className="text-lg text-gray-300">{productById?.product.description}</p>
 
           <div className="grid grid-cols-2 gap-y-2 text-gray-400">
             <p>
               <span className="font-semibold">Category:</span>{" "}
-              {productById.category}
+              {productById?.product.category}
             </p>
             <p>
-              <span className="font-semibold">Grade:</span> {productById.grade}
+              <span className="font-semibold">Grade:</span> {productById?.product.grade}
             </p>
             <p>
-              <span className="font-semibold">Size:</span> {productById.size}
+              <span className="font-semibold">Size:</span> {productById?.product.size}
             </p>
             <p>
               <span className="font-semibold">Supplier:</span>{" "}
-              {productById?.supplierId?.name}
+              {productById?.supplier?.name}
             </p>
             <p>
               <span className="font-semibold">Available:</span>{" "}
-              {productById.quantityAvailable}
+              {productById?.product.quantityAvailable}
             </p>
           </div>
 
           <p className="text-2xl font-bold text-green-400 mt-4">
-            ₹ {productById.price}
+            ₹ {productById?.product.price}
           </p>
 
           {/* Action Buttons */}
