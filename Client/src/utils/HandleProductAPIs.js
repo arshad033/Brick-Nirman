@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { apiUrl } from "./constant.jsx";
 
 // add to favorites
@@ -36,6 +37,27 @@ export const fetchProductDetails = async (id, setProduct) => {
     console.error("Error fetching data:", error);
   }
 };
+//get Supplier Producyts by SupplierId
+export const fetchProductsBySupplierId = async (supplierId, setSupplierProducts) => {
+  console.log("Fetching products for Supplier ID: ", supplierId);
+  try {
+    const response = await fetch(`${apiUrl}/products/get-supplier-products/${supplierId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+
+    const result = await response.json();
+    if (result?.data) {
+      setSupplierProducts(result.data); // ✅ Update products state
+    }
+  } catch (error) {
+    console.error("Error fetching supplier products:", error);
+  }
+};
+
 export const checkFav = async (productId, setIsFavorited) => {
   try {
     const response = await fetch(
