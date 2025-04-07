@@ -56,15 +56,17 @@ export const getSupplierById = async (id, setSupplier,setCheckSuppliers) => {
     }
 };
 
-export const updateSupplier = async (updatedData, token, setSupplier) => {
+export const updateSupplier = async (updatedData, setSupplier) => {
     try {
+        const formData = new FormData();
+        if (updatedData.image) {
+            formData.append('avatar', updatedData.image); // must match multer field name
+        }
+
         const response = await fetch(`${apiUrl}/suppliers/update`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(updatedData),
+            credentials: 'include',
+            body: formData, // no headers here
         });
 
         const result = await response.json();
@@ -75,6 +77,7 @@ export const updateSupplier = async (updatedData, token, setSupplier) => {
         console.error("Error updating supplier:", error);
     }
 };
+
 
 export const deleteSupplier = async (id, role, token, onSuccess) => {
     try {
