@@ -1,8 +1,10 @@
+import mongoose from 'mongoose';
 import { Product } from '../models/product.models.js';
 import { ApiError } from '../utils/ApiError.js';
 import { ApiResponse } from '../utils/ApiResponse.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { uploadOnCloudinary } from '../utils/cloudinary.js';
+import { Supplier } from '../models/supplier.model.js';
 
 export const createProduct = asyncHandler(async (req, res) => {
   const { name, description, category, price, quantityAvailable, size, grade } =
@@ -74,11 +76,12 @@ export const getAllProducts = asyncHandler(async (req, res) => {
 });
 
 export const getProductById = asyncHandler(async (req, res) => {
-  const product = await Product.findById(req.params.id).populate(
-    'supplierId',
-    'name'
-  );
+ console.log("Id "+ req.params.id);
+ 
+  const product = await Product.findById(req.params.id)
+  const supplier = await Supplier.findOne({supplierId: product.supplierId});
 
+  const data = {product: product, supplier: supplier}
   let message;
   if (product.length === 0) {
     message = 'No products found';
@@ -86,9 +89,21 @@ export const getProductById = asyncHandler(async (req, res) => {
     message = 'Products fetched successfully';
   }
 
-  res.status(200).json(new ApiResponse(200, product, message));
+  res.status(200).json(new ApiResponse(200, data, message));
 });
+export const getProductsBySupplierId = asyncHandler(async (req, res) => {
+  
+  const products = await Product.find({ supplierId: req.params.id });
+  let message;
+  
+  if (!products || products.length === 0) {
+    message = 'No products found for this supplier';
+  } else {
+    message = 'Products fetched successfully';
+  }
 
+  res.status(200).json(new ApiResponse(200, products, message));
+});
 export const updateProduct = asyncHandler(async (req, res) => {
   const {
     name,
