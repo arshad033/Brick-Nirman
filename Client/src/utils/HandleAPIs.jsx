@@ -55,7 +55,6 @@ export const loginUser = async (loginData, setUser,setIsLoginOpen) => {
         if (result?.data) {
             setUser(result.data); // ✅ Update state inside component
             setIsLoginOpen(false); // ✅ Reload page to reflect changes
-            localStorage.removeItem("userId")
             localStorage.setItem("userId", result.data._id);
             localStorage.setItem("username", result.data.fullName);
         }
