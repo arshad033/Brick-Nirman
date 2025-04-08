@@ -14,11 +14,9 @@ function ProductDetailsPage() {
     fetchProductsBySupplierId(productById?.supplier?.supplierId, setSupplierProducts);
     navigate(`/supplier-profile/${productById?.supplier?.supplierId}`)
   }
-  console.log("this is the productById details page: ", productById?.product);
-  console.log(productById);
- 
   useEffect(() => {
     fetchProductDetails(id, setProductById);
+    window.scrollTo(0, 0);
   }, [id, setProductById]);
 
 
