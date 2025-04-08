@@ -32,7 +32,7 @@ export const getAllSuppliers = async (setSuppliers) => {
 };
 
 
-export const getSupplierById = async (id, setSupplier,setCheckSuppliers) => {
+export const getSupplierById = async (id, setSuppliers,setCheckSuppliers) => {
     try {
         const response = await fetch(`${apiUrl}/suppliers/${id}`,{
             method: 'GET',
@@ -43,8 +43,8 @@ export const getSupplierById = async (id, setSupplier,setCheckSuppliers) => {
         });
         const result = await response.json();
         if (result?.data) {
-            setSupplier(result.data);
-            if(result.statusCode === 200) {
+            setSuppliers(result.data);
+            if(result?.data?.length !== 0) {
                 setCheckSuppliers(true);
             }
             else {

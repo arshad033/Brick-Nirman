@@ -1,10 +1,12 @@
-import React, { useContext, useEffect, useRef, useCallback } from "react";
+import React, { useContext, useEffect, useRef, useCallback, useState } from "react";
 import { Pencil, BadgeCheck } from "lucide-react";
 import { AppContext } from "../context/AppContext";
 import ProductCard from "../components/ProductCard";
 import { useParams } from "react-router-dom";
 import { getSupplierById, updateSupplier } from "../utils/HandleSupplier";
-import { fetchProductsBySupplierId } from "../utils/HandleProductAPIs";
+import {  createProduct, fetchProductsBySupplierId } from "../utils/HandleProductAPIs";
+import CreatePostModal from "../components/CreatePostModal";
+// import PopUp_Meassage from "../components/PopUp_Meassage";
 
 const SupplierProfile = () => {
   const {
@@ -26,6 +28,7 @@ const SupplierProfile = () => {
   // ✅ Fetch products only when ID changes
   useEffect(() => {
     fetchProductsBySupplierId(id, setSupplierProducts);
+    window.scrollTo(0, 0);
   }, [id, setSupplierProducts]);
 
   const handleClick = () => {
@@ -43,6 +46,24 @@ const SupplierProfile = () => {
     [setSuppliers]
   );
   
+  // Create Post Modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  console.log(message);
+  
+  const handleCreateProduct = async (formData) => {
+    try {
+      const result = await createProduct(formData);
+      console.log("✅ Created Product:", result);
+      setMessage("✅ Created Product:")
+      fetchProductsBySupplierId(id, setSupplierProducts); // 🔁 Refresh product list
+      setIsModalOpen(false); // ✅ Close modal
+    } catch (error) {
+      console.error("❌ Error creating product:", error);
+      setMessage("❌ Error creating product:")
+      // Optionally: show toast or alert
+    }
+  };
 
   return (
     <div className="w-screen p-4 text-white">
@@ -87,7 +108,7 @@ const SupplierProfile = () => {
         </div>
         <button
           onClick={handleClick}
-          className="flex items-center gap-2 text-gray-900 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-full text-sm"
+          className="flex items-center cursor-pointer gap-2 text-gray-900 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-full text-sm"
         >
           <Pencil className="w-4 h-4" /> Edit Profile
         </button>
@@ -104,13 +125,27 @@ const SupplierProfile = () => {
 
       {/* Posts Section */}
       <div className="max-w-5xl mx-auto">
-        <h2 className="text-lg font-semibold mb-4">Posts</h2>
+        <div className="w-full flex items-center justify-between mb-4">
+           <h2 className="text-lg font-semibold mb-4">Posts</h2>
+           <button
+          onClick={() => setIsModalOpen(true)}
+          className="flex items-center gap-2 cursor-pointer  border-[1px] border-gray-100 hover:text-black hover:bg-gray-200 px-4 py-2 rounded-full text-sm"
+        >
+          <Pencil className="w-4 h-4" /> Create Post
+        </button>
+        <CreatePostModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handleCreateProduct}
+      />
+        </div>
         <div className="flex flex-wrap max-lg:justify-center gap-4">
           {supplierProducts?.map((post, index) => (
             <ProductCard key={index} product={post} />
           ))}
         </div>
       </div>
+     {/* {message && <PopUp_Meassage message={message}  />} */}
     </div>
   );
 };
