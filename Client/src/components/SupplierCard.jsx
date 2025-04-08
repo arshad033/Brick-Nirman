@@ -2,42 +2,43 @@ import React from "react";
 import { Star, CheckCircle } from "lucide-react";
 
 const SupplierCard = ({ supplier }) => {
-  const renderRatingStars = (rating) => {
-    const stars = [];
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
+  // const renderRatingStars = (rating) => {
+  //   const stars = [];
+  //   const fullStars = Math.floor(rating);
+  //   const hasHalfStar = rating % 1 !== 0;
 
-    for (let i = 0; i < fullStars; i++) {
-      stars.push(
-        <Star key={`star-${i}`} className="text-yellow-400 w-5 h-5" />
-      );
-    }
+  //   for (let i = 0; i < fullStars; i++) {
+  //     stars.push(
+  //       <Star key={`star-${i}`} className="text-yellow-400 w-5 h-5" />
+  //     );
+  //   }
 
-    if (hasHalfStar) {
-      stars.push(
-        <div key="half-star" className="relative w-5 h-5">
-          <Star className="text-gray-400 w-5 h-5 absolute" />
-          <div className="absolute overflow-hidden w-1/2 h-5">
-            <Star className="text-yellow-400 w-5 h-5" />
-          </div>
-        </div>
-      );
-    }
+  //   if (hasHalfStar) {
+  //     stars.push(
+  //       <div key="half-star" className="relative w-5 h-5">
+  //         <Star className="text-gray-400 w-5 h-5 absolute" />
+  //         <div className="absolute overflow-hidden w-1/2 h-5">
+  //           <Star className="text-yellow-400 w-5 h-5" />
+  //         </div>
+  //       </div>
+  //     );
+  //   }
 
-    const emptyStars = 5 - stars.length;
-    for (let i = 0; i < emptyStars; i++) {
-      stars.push(<Star key={`empty-${i}`} className="text-gray-400 w-5 h-5" />);
-    }
+  //   const emptyStars = 5 - stars.length;
+  //   for (let i = 0; i < emptyStars; i++) {
+  //     stars.push(<Star key={`empty-${i}`} className="text-gray-400 w-5 h-5" />);
+  //   }
 
-    return stars;
-  };
-
+  //   return stars;
+  // };
+  console.log("supplier : "+supplier);
+  
   return (
     <div className="bg-gradient-to-b from-gray-800 to-gray-700 p-6 rounded-xl shadow-xl border border-gray-600 hover:shadow-2xl hover:scale-105 transition-transform duration-300 ease-out">
       <div className="flex flex-col items-center gap-6 text-center md:text-left">
         <img
           src={
-            supplier?.profilePic ||
+            supplier?.image ||
             "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
           }
           alt={`${supplier?.name} profile`}
@@ -52,19 +53,19 @@ const SupplierCard = ({ supplier }) => {
             )}
           </div>
 
-          <div className="flex justify-center md:justify-start items-center mb-4">
+          {/* <div className="flex justify-center md:justify-start items-center mb-4">
             {renderRatingStars(supplier?.rating)}
             <span className="ml-2 text-white text-sm">{supplier?.rating}</span>
-          </div>
+          </div> */}
 
           <div className="space-y-1 text-gray-300 text-sm">
             <div>
               <strong className="text-blue-400">Joined:</strong>{" "}
-              {supplier?.joinedDate}
+              {supplier?.createdAt && new Date(supplier.createdAt).toLocaleDateString()}
             </div>
             <div>
               <strong className="text-blue-400">Service Area:</strong>{" "}
-              {supplier?.serviceArea}
+              {supplier?.serviceArea?.map((area, index) => <span key={index}>{area} ,</span>)}
             </div>
             <div>
               <strong className="text-blue-400">Contact:</strong>{" "}
