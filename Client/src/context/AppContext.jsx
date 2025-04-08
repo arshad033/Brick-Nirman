@@ -8,6 +8,7 @@ export const AppContext = createContext();
 export const AppProvider = ({ children }) => {
   const [product, setProduct] = useState(null);
   const [productById, setProductById] = useState(null);
+  const [cartProducts, setCartProducts] = useState(null);
   const [favProduct, setFavProduct] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [sideNavSelect, setSideNavSelect] = useState("Home");
@@ -29,6 +30,8 @@ export const AppProvider = ({ children }) => {
         setProduct,
         productById,
         setProductById,
+        cartProducts,
+        setCartProducts,
         favProduct,
         setFavProduct,
         isSidebarOpen,
