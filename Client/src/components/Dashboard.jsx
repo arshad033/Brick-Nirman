@@ -43,8 +43,8 @@ export default function Dashboard() {
 
   useEffect(() => {
     document.body.style.overflow =
-      isLoginOpen || isRegisterOpen || isSidebarOpen ? "hidden" : "auto";
-  }, [isLoginOpen, isRegisterOpen, isSidebarOpen]);
+      isLoginOpen || isRegisterOpen ? "hidden" : "auto";
+  }, [isLoginOpen, isRegisterOpen]);
 
   return (
     <div className="w-full">

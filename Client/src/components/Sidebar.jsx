@@ -1,7 +1,12 @@
 import { FaHome, FaUsers, FaFile, FaHeart } from "react-icons/fa";
-import { IoCloseSharp, logo, FaCartShopping, ShoppingBasket } from "../assets/assets.js";
+import {
+  IoCloseSharp,
+  logo,
+  FaCartShopping,
+  ShoppingBasket,
+} from "../assets/assets.js";
 import { logoutUser } from "../utils/HandleAPIs.jsx";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { AppContext } from "../context/AppContext.jsx";
 
 export default function Sidebar({
@@ -12,6 +17,8 @@ export default function Sidebar({
 }) {
   const [userLogout, setResponse] = useState(null);
   const { setUser } = useContext(AppContext);
+  const sidebarRef = useRef();
+
   const handleLogout = () => {
     logoutUser(setResponse);
   };
@@ -25,15 +32,37 @@ export default function Sidebar({
     }
   }, [setIsSidebarOpen, setUser, userLogout]);
 
-  // useEffect(() => {
-  //   if (isSidebarOpen) {
-  //     document.body.addEventListener("click", function () {
-  //       setIsSidebarOpen(false);
-  //     });
-  //   }
-  // });
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        isSidebarOpen &&
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target)
+      ) {
+        setIsSidebarOpen(false);
+      }
+    };
+  
+    const handleScroll = () => {
+      if (isSidebarOpen) {
+        setIsSidebarOpen(false);
+      }
+    };
+  
+    document.addEventListener("mousedown", handleClickOutside);
+    window.addEventListener("scroll", handleScroll);
+  
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isSidebarOpen, setIsSidebarOpen]);
+  
+
   return (
     <aside
+      ref={sidebarRef}
       className={`${
         isSidebarOpen ? "left-0" : "-left-[100%]"
       } bg-gray-900 w-[16rem] py-5 text-white flex flex-col overflow-hidden transition-all duration-500 fixed h-full z-40`}
@@ -53,6 +82,7 @@ export default function Sidebar({
           <IoCloseSharp />
         </div>
       </div>
+
       <nav className="flex-1 p-5">
         <ul className="space-y-2">
           {[
@@ -75,9 +105,10 @@ export default function Sidebar({
           ))}
         </ul>
       </nav>
+
       <div className="w-full border-t-[1px] px-5 border-gray-700">
         <div
-          onClick={() => handleLogout()}
+          onClick={handleLogout}
           className="p-3 flex items-center space-x-3 hover:bg-gray-800 rounded-md cursor-pointer"
         >
           <span>Logout</span>

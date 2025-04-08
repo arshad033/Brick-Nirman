@@ -23,7 +23,9 @@ export default function Navbar({
     setIsSupplierOpen,
     searchTerm,
     setSearchTerm,
-    setSupplierProducts
+    setSupplierProducts,
+    suppliers,
+    setSuppliers
   } = useContext(AppContext);
   const navigate = useNavigate();
   const UserLoggedIn = !!user;
@@ -54,12 +56,10 @@ export default function Navbar({
     };
     navigate(routes[item] || "/");
   };
-  const [supplier, setSupplier] = useState(null);
   const [showMsg, setshowMsg] = useState(false);
   const supplierId = localStorage.getItem("userId");
-
   const handleProfile = () => {
-    getSupplierById(supplierId, setSupplier, setCheckSuppliers);
+    getSupplierById(supplierId, setSuppliers, setCheckSuppliers);
     fetchProductsBySupplierId(supplierId, setSupplierProducts);
     if (checkSuppliers) {
       navigate(`/supplier-profile/${supplierId}`);
@@ -72,12 +72,9 @@ export default function Navbar({
     }
   };
 
-  console.log(supplier);
-
   const [supplierBtn, setSupplierBtn] = useState(false);
   useEffect(() => {
-    getSupplierById(supplierId, setSupplier, setCheckSuppliers);
-  
+    getSupplierById(supplierId, setSuppliers, setCheckSuppliers);
     if (!supplierId) {
       setSupplierBtn(false);
     } else if (!checkSuppliers) {
@@ -85,7 +82,7 @@ export default function Navbar({
     } else {
       setSupplierBtn(false);
     }
-  }, [checkSuppliers, setCheckSuppliers, supplierId]);
+  },[checkSuppliers, setCheckSuppliers, setSuppliers, supplierId]);
 
   return (
     <>
@@ -156,7 +153,7 @@ export default function Navbar({
           >
             <img
               src={
-                user?.avatar ||
+                suppliers?.[0]?.image ||
                 "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
               }
               alt="User"
