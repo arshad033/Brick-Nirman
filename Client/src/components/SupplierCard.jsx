@@ -1,7 +1,7 @@
 import React from "react";
 import { Star, CheckCircle } from "lucide-react";
 
-const SupplierCard = ({supplier}) => {
+const SupplierCard = ({ supplier }) => {
   const renderRatingStars = (rating) => {
     const stars = [];
     const fullStars = Math.floor(rating);
@@ -36,7 +36,10 @@ const SupplierCard = ({supplier}) => {
     <div className="bg-gradient-to-b from-gray-800 to-gray-700 p-6 rounded-xl shadow-xl border border-gray-600 hover:shadow-2xl hover:scale-105 transition-transform duration-300 ease-out">
       <div className="flex flex-col items-center gap-6 text-center md:text-left">
         <img
-          src={supplier?.profilePic}
+          src={
+            supplier?.profilePic ||
+            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+          }
           alt={`${supplier?.name} profile`}
           className="w-28 h-28 rounded-full object-cover border-4 border-blue-500 shadow-md -mt-10"
         />
