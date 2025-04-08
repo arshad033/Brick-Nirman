@@ -6,7 +6,7 @@ import { AppContext } from "../context/AppContext";
 
 export default function Footer() {
   const navigate = useNavigate();
-  const {setIsLoginOpen }= useContext(AppContext)
+  const { checkSuppliers ,setIsSupplierOpen}= useContext(AppContext)
  // Hnadle Quick Links
   const handleQuickLinks = (item) => {
     const routes = {
@@ -23,19 +23,20 @@ export default function Footer() {
   };
   // Handle My Account Links
   const handleAccountLinks = (item) => {
-    console.log(item);
-    if(item == "Login"){
-      setIsLoginOpen(true)
-    }
     const routes = {
       "Order History": "/order-history",
-      "My Wishlist": "/wishlist",
+      "My Wishlist": "/favourites",
       "Track Order": "/track-order",
     };
 
     if (routes[item]) {
       navigate(routes[item]);
     }
+  };
+
+  // Handle Apply Button
+  const handleApplyBtn = () => {
+    setIsSupplierOpen(true);
   };
   return (
     <footer className="bg-gray-800 text-gray-300 p-6 sm:p-10">
@@ -109,7 +110,7 @@ export default function Footer() {
         <div>
           <h3 className="text-white font-semibold">MY ACCOUNT</h3>
           <ul className="mt-3 space-y-3">
-          {["Login", "Order History", "My Wishlist", "Track Order"].map((item, index) => (
+          {[ "Order History", "My Wishlist", "Track Order"].map((item, index) => (
             <li 
               onClick={() => handleAccountLinks(item)} 
               className="cursor-pointer" 
@@ -122,13 +123,12 @@ export default function Footer() {
         </div>
 
         {/* Seller Zone */}
-        <div>
+        <div className={`${checkSuppliers && `hidden`}`}>
           <h3 className="text-white font-semibold">SELLER ZONE</h3>
           <ul className="mt-3 space-y-3">
             <li>
-              Become A Seller <span className="text-yellow-500 font-bold">Apply Now</span>
+              Become A Seller <span onClick={()=>handleApplyBtn()} className={` cursor-pointer text-yellow-500 font-bold`}>Apply Now</span>
             </li>
-            <li>Login to Seller Panel</li>
           </ul>
         </div>
       </div>

@@ -11,7 +11,8 @@ import { getAllSuppliers } from "../utils/HandleSupplier";
 function Home() {
   const { product, setProduct,suppliers,setSuppliers } = useContext(AppContext);
   const navigate = useNavigate();
-
+ console.log(suppliers);
+ 
   const handleViewMore = (val) => {
     navigate("/products");
     if (val == "supplier") {
@@ -22,6 +23,7 @@ function Home() {
   useEffect(() => {
     fetchProducts(setProduct);
     getAllSuppliers(setSuppliers)
+    window.scrollTo(0, 0);
   }, []);
 
   return (
