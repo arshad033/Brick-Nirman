@@ -38,16 +38,22 @@ export const fetchProductDetails = async (id, setProduct) => {
   }
 };
 //get Supplier Producyts by SupplierId
-export const fetchProductsBySupplierId = async (supplierId, setSupplierProducts) => {
+export const fetchProductsBySupplierId = async (
+  supplierId,
+  setSupplierProducts
+) => {
   console.log("Fetching products for Supplier ID: ", supplierId);
   try {
-    const response = await fetch(`${apiUrl}/products/get-supplier-products/${supplierId}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
+    const response = await fetch(
+      `${apiUrl}/products/get-supplier-products/${supplierId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
 
     const result = await response.json();
     if (result?.data) {
@@ -57,7 +63,6 @@ export const fetchProductsBySupplierId = async (supplierId, setSupplierProducts)
     console.error("Error fetching supplier products:", error);
   }
 };
-
 export const checkFav = async (productId, setIsFavorited) => {
   try {
     const response = await fetch(
@@ -114,26 +119,7 @@ export const RemoveFavProducts = async (id) => {
     console.error("Error fetching favorite products:", error);
   }
 };
-
 // add to cart
-export const AddCartProduct = async (id, price) => {
-  // console.log("Adding favorite products id: ", id);
-
-  try {
-    const response = await fetch(`${apiUrl}/addToCart/add-to-cart`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ productId: id, price }),
-      credentials: "include",
-    });
-    const result = await response.json();
-    // console.log(result);
-  } catch (error) {
-    console.error("Error fetching favorite products:", error);
-  }
-};
 export const checkCart = async (productId, setIsCarted) => {
   try {
     const response = await fetch(
@@ -156,23 +142,80 @@ export const checkCart = async (productId, setIsCarted) => {
     console.error("Error fetching favorite products:", error);
   }
 };
-export const RemoveCartProduct = async (productId) => {
-  // console.log("Adding favorite products id: ", id);
 
+export const AddCartProduct = async (productId, price, setCartProducts) => {
+  try {
+    const response = await fetch(`${apiUrl}/addToCart/add-to-cart`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ productId, price }),
+    });
+    const result = await response.json();
+    if (result.success) {
+      await getCartItems(setCartProducts); // update cart
+    }
+  } catch (error) {
+    console.error("AddCartProduct error:", error);
+  }
+};
+
+export const RemoveCartProduct = async (productId, setCartProducts) => {
   try {
     const response = await fetch(
       `${apiUrl}/addToCart/remove-from-cart/${productId}`,
       {
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
       }
     );
     const result = await response.json();
-    // console.log(result);
+    if (result.success) {
+      await getCartItems(setCartProducts);
+    }
   } catch (error) {
-    console.error("Error fetching favorite products:", error);
+    console.error("RemoveCartProduct error:", error);
+  }
+};
+
+export const RemoveCartProductCompletely = async (
+  productId,
+  setCartProducts
+) => {
+  try {
+    const response = await fetch(
+      `${apiUrl}/addToCart/remove-from-cart-complete/${productId}`,
+      {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      }
+    );
+    const result = await response.json();
+    if (result.success) {
+      await getCartItems(setCartProducts);
+    }
+  } catch (error) {
+    console.error("RemoveCartProductCompletely error:", error);
+  }
+};
+
+export const getCartItems = async (setCartProducts) => {
+  try {
+    const response = await fetch(`${apiUrl}/addToCart/get-cart`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+
+    const result = await response.json();
+    if (result?.data) {
+      setCartProducts(result.data);
+    }
+  } catch (error) {
+    console.error("Error fetching cart products:", error);
   }
 };
