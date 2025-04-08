@@ -7,14 +7,11 @@ function Favourites() {
   const { favProduct, setFavProduct } = useContext(AppContext);
   useEffect(() => {
     const userId = localStorage.getItem("userId");
-    console.log(userId);
-    
     if (userId) {
       fetchFavProducts(setFavProduct);
     }
+    
   }, [setFavProduct]);
-  console.log(favProduct);
-
   return (
     <>
       <div className=" bg-gradient-to-br from-gray-800 to-gray-900 py-10 px-4">
