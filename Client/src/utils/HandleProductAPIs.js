@@ -219,3 +219,24 @@ export const getCartItems = async (setCartProducts) => {
     console.error("Error fetching cart products:", error);
   }
 };
+
+//create Product 
+export const createProduct = async (formData) => {
+  try {
+    const response = await fetch(`${apiUrl}/products/create-product`, {
+      method: 'POST',
+      credentials: 'include',
+      body: formData,
+    });
+
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.message || 'Failed to create product');
+
+    return result; // ✅ return result so you can handle it in the caller
+  } catch (error) {
+    console.error("Error creating product:", error);
+    throw error; // ❌ throw again so the caller knows it failed
+  }
+};
+
+

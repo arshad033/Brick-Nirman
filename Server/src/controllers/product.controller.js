@@ -7,14 +7,12 @@ import { uploadOnCloudinary } from '../utils/cloudinary.js';
 import { Supplier } from '../models/supplier.model.js';
 
 export const createProduct = asyncHandler(async (req, res) => {
-  const { name, description, category, price, quantityAvailable, size, grade } =
+  const { name, price, quantityAvailable, size, grade } =
     req.body;
 
   // ✅ Validation: Ensure required fields
   if (
     !name ||
-    !description ||
-    !category ||
     !price ||
     !quantityAvailable ||
     !size ||
@@ -40,8 +38,6 @@ export const createProduct = asyncHandler(async (req, res) => {
   // ✅ Create new product with Cloudinary URLs
   const newProduct = await Product.create({
     name,
-    description,
-    category,
     price,
     quantityAvailable,
     size,

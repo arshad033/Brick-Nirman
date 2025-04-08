@@ -19,6 +19,7 @@ const ProductPage = () => {
     );
  useEffect(() => {
     fetchProducts(setProduct);
+    window.scrollTo(0, 0);
   },[setProduct])
   return (
     <div className="p-4 sm:p-6 bg-gray-900 min-h-screen text-white">
