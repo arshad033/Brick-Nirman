@@ -61,6 +61,22 @@ export const updateCart = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, cart, 'Cart updated successfully'));
 });
 
+export const getAllCartProducts = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+
+  const cartProducts = await AddToCart.find({ userId }).populate('productId'); // ✅ Populating product details if needed
+
+  res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        cartProducts,
+        'Fetched all cart products successfully'
+      )
+    );
+});
+
 export const checkCartProduct = asyncHandler(async (req, res) => {
   const { productId } = req.params;
 
@@ -79,7 +95,7 @@ export const checkCartProduct = asyncHandler(async (req, res) => {
     );
 });
 
-// ✅ Remove from Cart
+// ✅ Remove from Cart by quantity
 export const removeFromCart = asyncHandler(async (req, res) => {
   const { productId } = req.params;
 
@@ -89,13 +105,46 @@ export const removeFromCart = asyncHandler(async (req, res) => {
 
   const userId = req.user._id;
 
-  const cart = await AddToCart.findOneAndDelete({ userId, productId });
+  const cartItem = await AddToCart.findOne({ userId, productId });
 
-  if (!cart) {
+  if (!cartItem) {
+    throw new ApiError(404, 'Product not found in cart');
+  }
+
+  if (cartItem.quantity > 1) {
+    cartItem.quantity -= 1;
+    await cartItem.save();
+  } else {
+    await AddToCart.deleteOne({ _id: cartItem._id });
+  }
+
+  res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        'Product quantity updated or removed from cart successfully'
+      )
+    );
+});
+
+// ✅ Remove from Cart totally
+export const removeCartItemCompletely = asyncHandler(async (req, res) => {
+  const { productId } = req.params;
+
+  if (!productId) {
+    throw new ApiError(400, 'Product ID is required');
+  }
+
+  const userId = req.user._id;
+
+  const deleted = await AddToCart.findOneAndDelete({ userId, productId });
+
+  if (!deleted) {
     throw new ApiError(404, 'Product not found in cart');
   }
 
   res
     .status(200)
-    .json(new ApiResponse(200, 'Product removed from cart successfully'));
+    .json(new ApiResponse(200, 'Product removed from cart completely'));
 });
