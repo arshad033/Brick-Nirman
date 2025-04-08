@@ -1,4 +1,9 @@
+import { useEffect } from "react";
+
 function Order() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  })
   return (
     <div>
       <section className="bg-white py-8 antialiased dark:bg-gray-900 md:min-h-screen">

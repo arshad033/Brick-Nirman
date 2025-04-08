@@ -1,6 +1,9 @@
-import React from "react";
+import React, {  useEffect } from "react";
 
 const AboutUs = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  })
   return (
     <section className="py-24 relative">
       <div className="w-full max-w-7xl px-4 md:px-5 lg:px-5 mx-auto">
