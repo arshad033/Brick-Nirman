@@ -8,6 +8,7 @@ function Checkout() {
 
   const subtotal = location.state?.total || 0;
   const products = location.state?.productIds;
+  
   const tax = 1800;
   const totalAmount = subtotal + tax;
 
