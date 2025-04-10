@@ -7,6 +7,7 @@ import {
   getAllCartProducts,
   checkCartProduct,
   removeCartItemCompletely,
+  clearCart,
 } from '../controllers/addToCart.controller.js';
 import { verifyJwt } from '../middlewares/auth.middleware.js';
 
@@ -22,5 +23,6 @@ router.route('/remove-from-cart/:productId').delete(removeFromCart);
 router
   .route('/remove-from-cart-complete/:productId')
   .delete(removeCartItemCompletely);
+router.route('/clear-cart').delete(clearCart);
 
 export default router;
