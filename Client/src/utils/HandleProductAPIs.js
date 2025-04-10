@@ -143,7 +143,7 @@ export const checkCart = async (productId, setIsCarted) => {
   }
 };
 
-export const AddCartProduct = async (productId, price, setCartProducts) => {
+export const AddCartProduct = async (productId, price) => {
   try {
     const response = await fetch(`${apiUrl}/addToCart/add-to-cart`, {
       method: "POST",
@@ -152,9 +152,7 @@ export const AddCartProduct = async (productId, price, setCartProducts) => {
       body: JSON.stringify({ productId, price }),
     });
     const result = await response.json();
-    if (result.success) {
-      await getCartItems(setCartProducts); // update cart
-    }
+    
   } catch (error) {
     console.error("AddCartProduct error:", error);
   }
@@ -288,5 +286,94 @@ export const clearCart = async (setShowConfirmation) => {
   } catch (error) {
     console.error("Error clearing cart:", error);
     throw error; // ❌ re-throw for error handling in UI
+  }
+};
+
+export const fetchAllOrders = async (setOrders) => {
+  try {
+    const response = await fetch(`${apiUrl}/orders/get-All-Orders`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    });
+
+    const result = await response.json();
+    if (result.success) {
+      setOrders(result.data);
+      return result
+    }
+  } catch (error) {
+    console.error("fetchAllOrders error:", error);
+  }
+};
+
+
+export const fetchOrderById = async (orderId, setOrder) => {
+  try {
+    const response = await fetch(`${apiUrl}/get-order/${orderId}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    });
+
+    const result = await response.json();
+    if (result.success) {
+      setOrder(result.data);
+    }
+  } catch (error) {
+    console.error("fetchOrderById error:", error);
+  }
+};
+
+export const updateOrderDetails = async (orderId, updatedFields, setUpdatedOrder) => {
+  try {
+    const response = await fetch(`${apiUrl}/update-orders/${orderId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(updatedFields),
+    });
+
+    const result = await response.json();
+    if (result.success) {
+      setUpdatedOrder(result.data);
+    }
+  } catch (error) {
+    console.error("updateOrderDetails error:", error);
+  }
+};
+
+export const cancelOrderById = async (orderId) => {
+  try {
+    const response = await fetch(`${apiUrl}/orders/update-status/${orderId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+    });
+
+    const result = await response.json();
+    if (result.success) {
+       return result;
+    }
+  } catch (error) {
+    console.error("cancelOrderById error:", error);
+  }
+};
+
+export const updateOrderStatusById = async (orderId, statusFields, setOrderStatus) => {
+  try {
+    const response = await fetch(`${apiUrl}/update-order-status/${orderId}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(statusFields),
+    });
+
+    const result = await response.json();
+    if (result.success) {
+      setOrderStatus(result.data);
+    }
+  } catch (error) {
+    console.error("updateOrderStatusById error:", error);
   }
 };
