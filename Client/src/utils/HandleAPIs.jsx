@@ -62,7 +62,7 @@ export const loginUser = async (loginData, setUser,setIsLoginOpen) => {
         console.error("Error logging in:", error);
     }
 };
-.32
+
 export const logoutUser = async (setResponse) => {
     try {
         const response = await fetch(`${apiUrl}/users/logout`, {
@@ -104,21 +104,18 @@ export const getUserProfile = async (setUser) => {
     }
 };
 
-export const updateUserProfile = async (updatedData, setUpdatedUser) => {
+export const updateUserProfile = async (updatedData) => {
     try {
-        const response = await fetch(`${apiUrl}/users/update-profile`, {
+        const response = await fetch(`${apiUrl}/users/update-password`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(updatedData),
-            credentials: 'include',
         });
 
         const result = await response.json();
-        if (result?.data) {
-            setUpdatedUser(result.data); // ✅ Update state inside component
-        }
+        return result
     } catch (error) {
         console.error("Error updating user profile:", error);
     }
@@ -142,3 +139,37 @@ export const refreshTokens = async (setUser) => {
         console.error("Error refreshing tokens:", error);
     }
 };
+
+// sendOTP API call
+export const sendOTP = async (number) => {
+    try {
+      const res = await fetch(`${apiUrl}/users/send-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ number }),
+      });
+      const result = await res.json();
+      return result;
+      
+    } catch (err) {
+      console.error("Send OTP failed:", err);
+      return false;
+    }
+  };
+  
+  // verifyOTP API call
+  export const verifyOTP = async (number, otp) => {
+    try {
+      const res = await fetch(`${apiUrl}/users/verify-otp`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ number, otp }),
+      });
+      const data = await res.json();
+      return data.success;
+    } catch (err) {
+      console.error("Verify OTP failed:", err);
+      return false;
+    }
+  };
+  
