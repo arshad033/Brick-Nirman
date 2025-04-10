@@ -10,7 +10,7 @@ function Favourites() {
     if (userId) {
       fetchFavProducts(setFavProduct);
     }
-    
+    window.scrollTo(0, 0);
   }, [setFavProduct]);
   return (
     <>
