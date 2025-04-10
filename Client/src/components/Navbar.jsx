@@ -110,14 +110,13 @@ export default function Navbar({
         </div>
         <div className="max-lg:hidden w-[24%] flex items-center justify-between">
           {["Home", "About Us", "Contact Us", "Products"].map((item, index) => (
-            <a
+            <button
               onClick={() => handleNav(item)}
-              href="#"
               className="cursor-pointer"
               key={index}
             >
               {item}
-            </a>
+            </button>
           ))}
         </div>
         <div className="flex items-center space-x-4">
