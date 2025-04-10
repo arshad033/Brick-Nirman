@@ -187,11 +187,17 @@ function Cart() {
                   </dl>
                 </div>
 
-                <a
+                <button
                   onClick={() => {
-                    const productIds = cartProducts.map(
-                      (item) => item.productId._id
-                    );
+                    console.log(cartProducts);
+
+                    const productIds = cartProducts.map((item) => {
+                      return {
+                        productId: item.productId._id,
+                        quantity: item.quantity,
+                        price: item.price,
+                      };
+                    });
                     navigate("/checkout", {
                       state: {
                         productIds,
@@ -199,11 +205,10 @@ function Cart() {
                       },
                     });
                   }}
-                  href="#"
                   className="flex w-full items-center justify-center rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-blue-600 dark:hover:bg-blue-700"
                 >
                   Proceed to Checkout
-                </a>
+                </button>
               </div>
             </div>
           </div>
