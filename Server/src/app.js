@@ -11,7 +11,9 @@ import supplierRouter from './routes/supplier.routes.js';
 
 app.use(
   cors({
-    origin: 'http://localhost:5173' || process.env.CORS_ORIGIN,
+    origin:
+      'https://brick-nirman-frontend-a6p8fffoc-arshad033s-projects.vercel.app/' ||
+      process.env.CORS_ORIGIN,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
