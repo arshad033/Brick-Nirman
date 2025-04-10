@@ -11,12 +11,11 @@ import supplierRouter from './routes/supplier.routes.js';
 
 app.use(
   cors({
-    origin: '*',
-    //   'https://brick-nirman-frontend-a6p8fffoc-arshad033s-projects.vercel.app' ||
-    //   process.env.CORS_ORIGIN,
-    // credentials: true,
-    // methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-    // allowedHeaders: ['Content-Type', 'Authorization'],
+    origin:
+      'https://brick-nirman-frontend.vercel.app/' || process.env.CORS_ORIGIN,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   })
 );
 app.use(express.json({ limit: '10mb' }));
