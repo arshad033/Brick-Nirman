@@ -16,5 +16,6 @@ router.route('/get-All-Orders').get(getAllOrders);
 router.route('/update-orders/:id').patch(updateOrder);
 router.route('/cancel-order/:id').delete(cancelOrder);
 router.route('/get-order/:id').get(getOrderById);
+router.route('/update-status/:id').patch(updateOrderStatus);
 
 export default router;
