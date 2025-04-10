@@ -51,7 +51,6 @@ function ProductCard({ product }) {
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
-    console.log(userId);
     if (userId) {
       checkFav(product._id, setIsFavorited);
       checkCart(product._id, setIsCarted);
