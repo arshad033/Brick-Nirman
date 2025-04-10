@@ -165,6 +165,20 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
     new ApiResponse(200, updatedUser, 'User profile updated successfully')
   );
 });
+export const updatePassword = asyncHandler(async (req, res) => {
+  const { phone, password } = req.body;
+
+  const user = await User.findOne({ phone });
+  if (!user) {
+    throw new ApiError(404, 'User not found');
+  }
+
+  user.password = password; // Will be hashed automatically
+  await user.save();
+  res.json(
+    new ApiResponse(200,null, 'User profile updated successfully')
+  );
+});
 
 // Logout User
 export const logoutUser = asyncHandler(async (req, res) => {
@@ -187,4 +201,64 @@ export const logoutUser = asyncHandler(async (req, res) => {
     .clearCookie('accessToken', options)
     .clearCookie('refreshToken', options)
     .json(new ApiResponse(200, {}, 'User logged Out'));
+});
+
+
+// In-memory store for OTPs (for demo; use Redis in production)
+const otpStore = new Map();
+
+// Send OTP
+export const sendOtp = asyncHandler(async (req, res) => {
+  const { number } = req.body;
+
+  if (!number) {
+    throw new ApiError(400, "Phone number is required");
+  }
+  const userExist = await User.find({phone:number})
+  
+  if(userExist.length > 0){
+    const otp = Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit OTP
+    const expiresAt = Date.now() + 5 * 60 * 1000; // 5 minutes
+  
+    otpStore.set(number, { otp, expiresAt });
+  
+    return res
+      .status(200)
+      .json(new ApiResponse(200, otp, "OTP sent successfully"));
+  }
+  else{
+    return res
+      .status(204)
+      .json(new ApiResponse(204, null, "Enter Registered Number"));
+  }
+});
+
+// Verify OTP
+export const verifyOtp = asyncHandler(async (req, res) => {
+  const { number, otp } = req.body;
+
+  if (!number || !otp) {
+    throw new ApiError(400, "Both phone number and OTP are required");
+  }
+
+  const stored = otpStore.get(number);
+
+  if (!stored) {
+    throw new ApiError(400, "No OTP found for this number");
+  }
+
+  if (Date.now() > stored.expiresAt) {
+    otpStore.delete(number);
+    throw new ApiError(400, "OTP expired");
+  }
+
+  if (stored.otp !== otp) {
+    throw new ApiError(401, "Invalid OTP");
+  }
+
+  otpStore.delete(number); // Clear after success
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, null, "OTP verified successfully"));
 });
