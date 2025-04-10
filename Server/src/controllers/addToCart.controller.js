@@ -148,3 +148,22 @@ export const removeCartItemCompletely = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, 'Product removed from cart completely'));
 });
+// ✅ Remove All Items from Cart
+export const clearCart = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+
+  // ✅ Delete all cart items for the user
+  const result = await AddToCart.deleteMany({ userId });
+
+  // ✅ Check if any items were deleted
+  if (result.deletedCount === 0) {
+    throw new ApiError(404, 'Cart is already empty');
+  }
+
+  // ✅ Send structured response
+  res
+    .status(200)
+    .json(
+      new ApiResponse(200, true, null, null, 'All items removed from cart')
+    );
+});
