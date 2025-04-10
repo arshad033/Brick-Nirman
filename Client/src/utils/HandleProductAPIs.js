@@ -220,17 +220,18 @@ export const getCartItems = async (setCartProducts) => {
   }
 };
 
-//create Product 
+//create Product
 export const createProduct = async (formData) => {
   try {
-    const response = await fetch(`${apiUrl}/products/create-product`, {
-      method: 'POST',
-      credentials: 'include',
+    const response = await fetch(`${apiUrl}/orders/create-product`, {
+      method: "POST",
+      credentials: "include",
       body: formData,
     });
 
     const result = await response.json();
-    if (!response.ok) throw new Error(result.message || 'Failed to create product');
+    if (!response.ok)
+      throw new Error(result.message || "Failed to create product");
 
     return result; // ✅ return result so you can handle it in the caller
   } catch (error) {
@@ -238,5 +239,54 @@ export const createProduct = async (formData) => {
     throw error; // ❌ throw again so the caller knows it failed
   }
 };
+export const createOrder = async (
+  products,
+  totalAmount,
+  addressData,
+  setShowConfirmation
+) => {
+  try {
+    const response = await fetch(`${apiUrl}/orders/create-order`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        products: products,
+        totalAmount: totalAmount,
+        paymentMethod: "Cash",
+        deliveryAddress: addressData,
+      }),
+    });
 
+    const result = await response.json();
+    setShowConfirmation(true);
+    if (!response.ok)
+      throw new Error(result.message || "Failed to create product");
 
+    return result; // ✅ return result so you can handle it in the caller
+  } catch (error) {
+    console.error("Error creating product:", error);
+    throw error; // ❌ throw again so the caller knows it failed
+  }
+};
+export const clearCart = async (setShowConfirmation) => {
+  try {
+    const response = await fetch(`${apiUrl}/addToCart/clear-cart`, {
+      method: "DELETE",
+      credentials: "include", // ensures cookies are sent for authentication
+    });
+
+    const result = await response.json();
+    setShowConfirmation(true);
+    if (!response.ok) {
+      throw new Error(result.message || "Failed to clear cart");
+    }
+
+    return result; // ✅ success response
+  } catch (error) {
+    console.error("Error clearing cart:", error);
+    throw error; // ❌ re-throw for error handling in UI
+  }
+};
