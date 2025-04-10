@@ -72,7 +72,7 @@ function Home() {
               </button>
             </div>
             <div className=" flex items-center justify-center flex-wrap gap-5 mt-5">
-              {product?.map((product, index) => (
+              {product?.slice(8).map((product, index) => (
                 <ProductCard key={index} product={product} />
               ))}
             </div>
@@ -90,7 +90,7 @@ function Home() {
               </button>
             </div>
             <div className=" flex items-center justify-center flex-wrap gap-5 mt-5">
-              {product?.map((product, index) => (
+              {product?.slice(-8).map((product, index) => (
                 <ProductCard key={index} product={product} />
               ))}
             </div>
