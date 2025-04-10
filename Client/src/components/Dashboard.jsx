@@ -6,6 +6,7 @@ import UserRegistration from "./UserRegistration";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import SupplierRegistration from "./SupplierRegistration";
+import ForgotPassword from "./ForgotPassword";
 
 export default function Dashboard() {
   const { 
@@ -13,7 +14,8 @@ export default function Dashboard() {
     sideNavSelect, setSideNavSelect, 
     isLoginOpen, setIsLoginOpen, 
     isRegisterOpen, setIsRegisterOpen ,
-    isSupplierOpen, setIsSupplierOpen
+    isSupplierOpen, setIsSupplierOpen,
+    forgotPasswordOpen ,setForgotPasswordOpen
   } = useContext(AppContext);
   
   const navigate = useNavigate()
@@ -110,6 +112,24 @@ export default function Dashboard() {
               ✖
             </button>
             <SupplierRegistration />
+          </div>
+        </div>
+      )}
+       {forgotPasswordOpen && (
+        <div
+          className={`fixed top-0 left-0 w-full h-full bg-[#22222282] flex justify-center items-center z-50`}
+        >
+          <div
+            onClick={handlePopUp}
+            className="bg-gray-800 shadow-lg relative w-[80%] max-w-md rounded-2xl"
+          >
+            <button
+              className="absolute top-4 right-4 text-gray-600 cursor-pointer hover:text-gray-900 text-xl z-40"
+              onClick={() => setForgotPasswordOpen(false)}
+            >
+              ✖
+            </button>
+            <ForgotPassword />
           </div>
         </div>
       )}
