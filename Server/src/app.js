@@ -12,7 +12,6 @@ import supplierRouter from './routes/supplier.routes.js';
 app.use(
   cors({
     origin:
-      '*' ||
       'https://brick-nirman-frontend-a6p8fffoc-arshad033s-projects.vercel.app' ||
       process.env.CORS_ORIGIN,
     credentials: true,
