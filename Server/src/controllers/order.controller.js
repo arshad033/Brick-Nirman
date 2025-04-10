@@ -51,17 +51,28 @@ export const createOrder = asyncHandler(async (req, res) => {
 
 // ✅ Get All Orders with Population
 export const getAllOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find(req.user._id);
-
+  const orders = await Order.find({userId:req.user._id});
   // ✅ Validation: Check if orders exist
   if (!orders || orders.length === 0) {
     throw new ApiError(404, 'No orders found');
   }
+  try {
+    if(req.user?._id ){
+        const orders = await Order.find({ userId: req.user?._id });       
+        // ✅ Validation: Check if orders exist
+        if (!orders || orders.length === 0) {
+            throw new ApiError(404, "No orders found");
+        }
+        // ✅ Send structured response
+        res.status(200).json(
+            new ApiResponse(200,  orders, "Orders fetched successfully")
+        );
+    }
 
-  // ✅ Send structured response
-  res
-    .status(200)
-    .json(new ApiResponse(200, orders, 'Orders fetched successfully'));
+    } catch (error) {
+        console.log(error);
+    }
+
 });
 
 // ✅ Get Order by ID
@@ -144,15 +155,15 @@ export const cancelOrder = asyncHandler(async (req, res) => {
 
 // ✅ Update Order Status
 export const updateOrderStatus = asyncHandler(async (req, res) => {
-  const { deliveryStatus, paymentStatus } = req.body;
+  // const { deliveryStatus, paymentStatus } = req.body;
 
-  // ✅ Validation: Ensure at least one status is provided
-  if (!deliveryStatus && !paymentStatus) {
-    throw new ApiError(
-      400,
-      'Provide deliveryStatus or paymentStatus to update'
-    );
-  }
+  // // ✅ Validation: Ensure at least one status is provided
+  // if (!deliveryStatus && !paymentStatus) {
+  //   throw new ApiError(
+  //     400,
+  //     'Provide deliveryStatus or paymentStatus to update'
+  //   );
+  // }
 
   const order = await Order.findById(req.params.id);
 
@@ -162,26 +173,22 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
   }
 
   // ✅ Update delivery status and calculate delivery time if delivered
-  if (deliveryStatus) {
-    order.deliveryStatus = deliveryStatus;
 
-    if (deliveryStatus === 'Delivered') {
-      const createdAt = order.createdAt;
-      const deliveredAt = new Date();
+    order.deliveryStatus = 'Cancelled';
 
-      // Calculate delivery time in days
-      const deliveryTime = Math.ceil(
-        (deliveredAt - createdAt) / (1000 * 60 * 60 * 24)
-      );
+    // if (deliveryStatus === 'Delivered') {
+    //   const createdAt = order.createdAt;
+    //   const deliveredAt = new Date();
 
-      order.deliveryTimeInDays = deliveryTime;
-    }
-  }
+    //   // Calculate delivery time in days
+    //   const deliveryTime = Math.ceil(
+    //     (deliveredAt - createdAt) / (1000 * 60 * 60 * 24)
+    //   );
 
-  // ✅ Update payment status if provided
-  if (paymentStatus) {
-    order.paymentStatus = paymentStatus;
-  }
+    //   order.deliveryTimeInDays = deliveryTime;
+    // }
+  
+
 
   await order.save();
 
@@ -191,9 +198,7 @@ export const updateOrderStatus = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        true,
         order,
-        null,
         'Order status updated successfully'
       )
     );
