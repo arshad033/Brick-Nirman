@@ -7,7 +7,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const {setUser,setIsLoginOpen} = useContext(AppContext)
+  const {setUser,setIsLoginOpen,setForgotPasswordOpen,setIsRegisterOpen} = useContext(AppContext)
   const handleSubmit = (e) => {
     e.preventDefault();
     const loginData = { email, password };
@@ -58,9 +58,14 @@ const Login = () => {
         </div>
 
         <div className="flex items-center justify-between">
-          <a href="#" className="text-sm text-blue-400 hover:text-blue-300">
+          <button onClick={()=>
+            {
+              setForgotPasswordOpen(true)
+              setIsLoginOpen(false)
+            }
+            } className="text-sm text-blue-400 hover:text-blue-300">
             Forgot password?
-          </a>
+          </button>
         </div>
 
         <button
@@ -74,9 +79,12 @@ const Login = () => {
       <div className="mt-6 text-center">
         <p className="text-sm text-blue-300">
           Don't have an account?{" "}
-          <a href="#" className="text-blue-400 hover:text-blue-300">
+          <button onClick={()=>{
+            setIsLoginOpen(false)
+            setIsRegisterOpen(true)
+          }} className="text-blue-400 hover:text-blue-300">
             Sign Up
-          </a>
+          </button>
         </p>
       </div>
     </div>
