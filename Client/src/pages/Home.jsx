@@ -12,12 +12,13 @@ function Home() {
   const { product, setProduct, suppliers, setSuppliers } =
     useContext(AppContext);
   const navigate = useNavigate();
-  console.log(suppliers);
+  // console.log(suppliers);
 
   const handleViewMore = (val) => {
-    navigate("/products");
-    if (val == "supplier") {
+    if (val === "supplier") {
       navigate("/suppliers");
+    } else {
+      navigate("/products");
     }
   };
 
@@ -66,7 +67,7 @@ function Home() {
             <div className="flex justify-between px-12">
               <h1 className="text-2xl font-bold">Best Selling</h1>
               <button
-                onClick={() => handleViewMore()}
+                onClick={() => handleViewMore(product)}
                 className="text-md underline text-blue-500 cursor-pointer"
               >
                 View More{" "}
@@ -74,7 +75,7 @@ function Home() {
             </div>
             <div className=" flex items-center justify-center flex-wrap gap-5 mt-5">
               {product?.map((product, index) => (
-                <ProductCard key={index} product={product} />
+                <ProductCard key={index} product={"product"} />
               ))}
             </div>
           </div>
