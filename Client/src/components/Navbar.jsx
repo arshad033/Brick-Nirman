@@ -25,7 +25,9 @@ export default function Navbar({
     setSearchTerm,
     setSupplierProducts,
     suppliers,
-    setSuppliers
+    setSuppliers,
+    showMsg, 
+    setshowMsg
   } = useContext(AppContext);
   const navigate = useNavigate();
   const UserLoggedIn = !!user;
@@ -56,7 +58,6 @@ export default function Navbar({
     };
     navigate(routes[item] || "/");
   };
-  const [showMsg, setshowMsg] = useState(false);
   const supplierId = localStorage.getItem("userId");
   const handleProfile = () => {
     getSupplierById(supplierId, setSuppliers, setCheckSuppliers);
