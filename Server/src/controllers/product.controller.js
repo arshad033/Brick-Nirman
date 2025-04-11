@@ -9,7 +9,7 @@ import { Supplier } from '../models/supplier.model.js';
 export const createProduct = asyncHandler(async (req, res) => {
   const { name, price, quantityAvailable, size, grade } =
     req.body;
-
+   
   // ✅ Validation: Ensure required fields
   if (
     !name ||

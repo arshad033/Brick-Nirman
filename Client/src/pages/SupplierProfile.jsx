@@ -4,7 +4,10 @@ import { AppContext } from "../context/AppContext";
 import ProductCard from "../components/ProductCard";
 import { useParams } from "react-router-dom";
 import { getSupplierById, updateSupplier } from "../utils/HandleSupplier";
-import {  createProduct, fetchProductsBySupplierId } from "../utils/HandleProductAPIs";
+import {
+  createProduct,
+  fetchProductsBySupplierId,
+} from "../utils/HandleProductAPIs";
 import CreatePostModal from "../components/CreatePostModal";
 // import PopUp_Meassage from "../components/PopUp_Meassage";
 
@@ -20,48 +23,49 @@ const SupplierProfile = () => {
   const { id } = useParams();
   const fileInputRef = useRef(null);
 
-  // ✅ Fetch supplier only when ID changes
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [message, setMessage] = useState("");
+
+  // Fetch supplier by ID
   useEffect(() => {
-    getSupplierById(id, setSuppliers, setCheckSuppliers);
+    if (id) getSupplierById(id, setSuppliers, setCheckSuppliers);
   }, [id, setCheckSuppliers, setSuppliers]);
 
-  // ✅ Fetch products only when ID changes
+  // Fetch supplier's products
   useEffect(() => {
-    fetchProductsBySupplierId(id, setSupplierProducts);
-    window.scrollTo(0, 0);
+    if (id) {
+      fetchProductsBySupplierId(id, setSupplierProducts);
+      window.scrollTo(0, 0);
+    }
   }, [id, setSupplierProducts]);
 
   const handleClick = () => {
-    fileInputRef.current.click();
+    fileInputRef.current?.click();
   };
 
   const handleFileChange = useCallback(
     (e) => {
-      const file = e.target.files[0];
+      const file = e.target.files?.[0];
       if (file) {
-        updateSupplier({ image: file }, setSuppliers);
-        e.target.value = null; // 🔁 Reset input after selection
+        const formData = new FormData();
+        formData.append("image", file);
+        updateSupplier(formData, setSuppliers);
+        e.target.value = null;
       }
     },
     [setSuppliers]
   );
-  
-  // Create Post Modal
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [message, setMessage] = useState("");
-  console.log(message);
-  
+
   const handleCreateProduct = async (formData) => {
     try {
       const result = await createProduct(formData);
       console.log("✅ Created Product:", result);
-      setMessage("✅ Created Product:")
-      fetchProductsBySupplierId(id, setSupplierProducts); // 🔁 Refresh product list
-      setIsModalOpen(false); // ✅ Close modal
+      // setMessage("✅ Product created successfully");
+      fetchProductsBySupplierId(id, setSupplierProducts);
+      setIsModalOpen(false);
     } catch (error) {
       console.error("❌ Error creating product:", error);
-      setMessage("❌ Error creating product:")
-      // Optionally: show toast or alert
+      // setMessage("❌ Failed to create product");
     }
   };
 
@@ -85,24 +89,20 @@ const SupplierProfile = () => {
               {suppliers?.[0]?.verified ? (
                 <BadgeCheck className="text-blue-500 w-5 h-5" />
               ) : (
-                <span className="text-xs text-gray-500">
-                  ⚠️ Not Verified
-                </span>
+                <span className="text-xs text-gray-500">⚠️ Not Verified</span>
               )}
             </div>
             <p className="text-gray-200">📞 {suppliers?.[0]?.phone}</p>
             <p className="text-gray-200">✉️ {suppliers?.[0]?.email}</p>
             <p className="text-gray-200">
-              <b>Survice Area : </b>
-              {suppliers?.[0]?.serviceArea?.map((area, index) => (
-                <span key={index}>{area + ", "}</span>
-              ))}
+              <b>Service Area:</b>{" "}
+              {suppliers?.[0]?.serviceArea?.join(", ")}
             </p>
             <p className="text-gray-200">
-              <b>Address : </b>
-              {suppliers?.[0]?.address?.zip}, {suppliers?.[0]?.address?.street},{" "}
-              {suppliers?.[0]?.address?.city}, {suppliers?.[0]?.address?.state},{" "}
-              {suppliers?.[0]?.address?.country}
+              <b>Address:</b>{" "}
+              {[suppliers?.[0]?.address?.zip, suppliers?.[0]?.address?.street, suppliers?.[0]?.address?.city, suppliers?.[0]?.address?.state, suppliers?.[0]?.address?.country]
+                .filter(Boolean)
+                .join(", ")}
             </p>
           </div>
         </div>
@@ -112,8 +112,6 @@ const SupplierProfile = () => {
         >
           <Pencil className="w-4 h-4" /> Edit Profile
         </button>
-
-        {/* Hidden input */}
         <input
           type="file"
           ref={fileInputRef}
@@ -126,26 +124,30 @@ const SupplierProfile = () => {
       {/* Posts Section */}
       <div className="max-w-5xl mx-auto">
         <div className="w-full flex items-center justify-between mb-4">
-           <h2 className="text-lg font-semibold mb-4">Posts</h2>
-           <button
-          onClick={() => setIsModalOpen(true)}
-          className="flex items-center gap-2 cursor-pointer  border-[1px] border-gray-100 hover:text-black hover:bg-gray-200 px-4 py-2 rounded-full text-sm"
-        >
-          <Pencil className="w-4 h-4" /> Create Post
-        </button>
-        <CreatePostModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSubmit={handleCreateProduct}
-      />
+          <h2 className="text-lg font-semibold mb-4">Posts</h2>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="flex items-center gap-2 cursor-pointer border border-gray-100 hover:text-black hover:bg-gray-200 px-4 py-2 rounded-full text-sm"
+          >
+            <Pencil className="w-4 h-4" /> Create Post
+          </button>
         </div>
+
+        <CreatePostModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onSubmit={handleCreateProduct}
+        />
+
         <div className="flex flex-wrap max-lg:justify-center gap-4">
           {supplierProducts?.map((post, index) => (
             <ProductCard key={index} product={post} />
           ))}
         </div>
       </div>
-     {/* {message && <PopUp_Meassage message={message}  />} */}
+
+      {/* Optional message display (uncomment if you use PopUp_Meassage) */}
+      {/* {message && <PopUp_Meassage message={message} />} */}
     </div>
   );
 };

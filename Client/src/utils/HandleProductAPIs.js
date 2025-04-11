@@ -221,7 +221,7 @@ export const getCartItems = async (setCartProducts) => {
 //create Product
 export const createProduct = async (formData) => {
   try {
-    const response = await fetch(`${apiUrl}/orders/create-product`, {
+    const response = await fetch(`${apiUrl}/products/create-product`, {
       method: "POST",
       credentials: "include",
       body: formData,

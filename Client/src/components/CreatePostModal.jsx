@@ -11,23 +11,19 @@ export default function CreatePostModal({ isOpen, onClose, onSubmit }) {
   });
 
   const [previewUrl, setPreviewUrl] = useState(null);
-  const fileInputRef = useRef(); // 🔹 for resetting file input
+  const fileInputRef = useRef();
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
     if (name === "image") {
       const file = files[0];
-      setFormData((prev) => ({
-        ...prev,
-        image: file,
-      }));
-      setPreviewUrl(URL.createObjectURL(file));
+      if (file) {
+        setFormData((prev) => ({ ...prev, image: file }));
+        setPreviewUrl(URL.createObjectURL(file));
+      }
     } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
+      setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
 
@@ -36,12 +32,14 @@ export default function CreatePostModal({ isOpen, onClose, onSubmit }) {
 
     const data = new FormData();
     for (const key in formData) {
-      data.append(key, formData[key]);
+      if (formData[key] !== null) {
+        data.append(key, formData[key]);
+      }
     }
 
-    onSubmit(data); // send to parent
-    resetForm(); // clear all inputs
-    onClose(); // close modal
+    onSubmit(data); // Pass to parent
+    resetForm();
+    onClose();
   };
 
   const resetForm = () => {
@@ -54,9 +52,7 @@ export default function CreatePostModal({ isOpen, onClose, onSubmit }) {
       image: null,
     });
     setPreviewUrl(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ""; // clear file input
-    }
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   if (!isOpen) return null;
