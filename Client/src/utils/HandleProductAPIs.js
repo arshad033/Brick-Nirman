@@ -42,7 +42,6 @@ export const fetchProductsBySupplierId = async (
   supplierId,
   setSupplierProducts
 ) => {
-  console.log("Fetching products for Supplier ID: ", supplierId);
   try {
     const response = await fetch(
       `${apiUrl}/products/get-supplier-products/${supplierId}`,

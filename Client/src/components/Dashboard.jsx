@@ -15,7 +15,8 @@ export default function Dashboard() {
     isLoginOpen, setIsLoginOpen, 
     isRegisterOpen, setIsRegisterOpen ,
     isSupplierOpen, setIsSupplierOpen,
-    forgotPasswordOpen ,setForgotPasswordOpen
+    forgotPasswordOpen ,setForgotPasswordOpen,
+    setshowMsg
   } = useContext(AppContext);
   
   const navigate = useNavigate()
@@ -32,10 +33,24 @@ export default function Dashboard() {
       Products: '/products',
     };
   
+    const protectedRoutes = ['Favorites', 'Carts', 'Orders'];
+    const userId = localStorage.getItem('userId');
+  
     if (routes[value]) {
-      navigate(routes[value]);
+      if (protectedRoutes.includes(value)) {
+        if (userId) {
+          navigate(routes[value]);
+        } else {
+          setshowMsg(true); // ✅ show message if not logged in
+          setTimeout(() => setshowMsg(false), 2000);
+        }
+      } else {
+        navigate(routes[value]); // normal navigation for other pages
+      }
     }
   };
+  
+  
   
   const [PopUp, setPopUp] = useState(true);
   const handlePopUp = (event) => {

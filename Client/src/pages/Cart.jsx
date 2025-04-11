@@ -20,7 +20,7 @@ function Cart() {
     };
 
     fetchItems();
-  }, []);
+  }, [setCartProducts]);
 
   if (loading)
     return <p className="text-center text-white py-10">Loading cart...</p>;

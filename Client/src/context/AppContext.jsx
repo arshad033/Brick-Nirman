@@ -25,6 +25,7 @@ export const AppProvider = ({ children }) => {
   const [supplierProducts, setSupplierProducts] = useState(null);
   const [ orders, setOrders] = useState(null);
   const [forgotPasswordOpen,setForgotPasswordOpen] = useState(false)
+   const [showMsg, setshowMsg] = useState(false);
   return (
     <AppContext.Provider
       value={{
@@ -61,7 +62,9 @@ export const AppProvider = ({ children }) => {
         orders,
         setOrders,
         forgotPasswordOpen,
-        setForgotPasswordOpen
+        setForgotPasswordOpen,
+        showMsg,
+        setshowMsg
       }}
     >
       {children}
