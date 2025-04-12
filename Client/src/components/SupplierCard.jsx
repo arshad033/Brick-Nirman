@@ -31,8 +31,12 @@ const SupplierCard = ({ supplier }) => {
 
   //   return stars;
   // };
-  console.log("supplier : "+supplier);
-  
+  // console.log("supplier in supplierCard arsh: : ", supplier);
+
+  if (!supplier) {
+    return <div className="text-gray-400">Supplier data is unavailable.</div>;
+  }
+
   return (
     <div className="bg-gradient-to-b from-gray-800 to-gray-700 p-6 rounded-xl shadow-xl border border-gray-600 hover:shadow-2xl hover:scale-105 transition-transform duration-300 ease-out">
       <div className="flex flex-col items-center gap-6 text-center md:text-left">
@@ -47,7 +51,9 @@ const SupplierCard = ({ supplier }) => {
 
         <div className="flex-1">
           <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
-            <h2 className="text-2xl font-bold text-white">{supplier?.name}</h2>
+            <h2 className="text-2xl font-bold text-white">
+              {supplier?.name || "Unknown Supplier"}
+            </h2>
             {supplier?.verified && (
               <CheckCircle className="w-6 h-6 text-blue-500" />
             )}
@@ -61,19 +67,22 @@ const SupplierCard = ({ supplier }) => {
           <div className="space-y-1 text-gray-300 text-sm">
             <div>
               <strong className="text-blue-400">Joined:</strong>{" "}
-              {supplier?.createdAt && new Date(supplier.createdAt).toLocaleDateString()}
+              {supplier?.createdAt &&
+                new Date(supplier.createdAt).toLocaleDateString()}
             </div>
             <div>
               <strong className="text-blue-400">Service Area:</strong>{" "}
-              {supplier?.serviceArea?.map((area, index) => <span key={index}>{area} ,</span>)}
+              {supplier?.serviceArea?.map((area, index) => (
+                <span key={`${area}-${index}`}>{area} ,</span>
+              ))}
             </div>
             <div>
               <strong className="text-blue-400">Contact:</strong>{" "}
               <a
-                href={`mailto:${supplier?.email}`}
+                href={`mailto:${supplier?.email || ""}`}
                 className="text-blue-400 hover:underline"
               >
-                {supplier?.email}
+                {supplier?.email || "No Email Provided"}
               </a>
             </div>
           </div>
