@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import ProductCard from "../components/ProductCard";
 import { useNavigate } from "react-router-dom";
@@ -11,8 +11,9 @@ import { getAllSuppliers } from "../utils/HandleSupplier";
 function Home() {
   const { product, setProduct, suppliers, setSuppliers } =
     useContext(AppContext);
+  const [loadingProducts, setLoadingProducts] = useState(true); // Loading state for products
+  const [loadingSuppliers, setLoadingSuppliers] = useState(true); // Loading state for suppliers
   const navigate = useNavigate();
-  // console.log(suppliers);
 
   const handleViewMore = (val) => {
     if (val === "supplier") {
@@ -23,10 +24,24 @@ function Home() {
   };
 
   useEffect(() => {
-    fetchProducts(setProduct);
-    getAllSuppliers(setSuppliers);
+    const fetchData = async () => {
+      try {
+        setLoadingProducts(true);
+        setLoadingSuppliers(true);
+        await fetchProducts(setProduct);
+        setLoadingProducts(false);
+        await getAllSuppliers(setSuppliers);
+        setLoadingSuppliers(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setLoadingProducts(false);
+        setLoadingSuppliers(false);
+      }
+    };
+
+    fetchData();
     window.scrollTo(0, 0);
-  }, []);
+  }, [fetchProducts, getAllSuppliers, setProduct, setSuppliers]);
 
   return (
     <>
@@ -73,10 +88,18 @@ function Home() {
                 View More{" "}
               </button>
             </div>
-            <div className=" flex items-center justify-center flex-wrap gap-5 mt-5">
-              {product?.slice(7).map((product, index) => (
-                <ProductCard key={index} product={product} />
-              ))}
+            <div className="flex items-center justify-center flex-wrap gap-5 mt-5">
+              {loadingProducts ? (
+                <p className="text-gray-700 dark:text-white">
+                  Loading products...
+                </p>
+              ) : (
+                product
+                  ?.slice(7)
+                  .map((product, index) => (
+                    <ProductCard key={index} product={product} />
+                  ))
+              )}
             </div>
           </div>
         </div>
@@ -91,10 +114,18 @@ function Home() {
                 View More{" "}
               </button>
             </div>
-            <div className=" flex items-center justify-center flex-wrap gap-5 mt-5">
-              {product?.slice(-8).map((product, index) => (
-                <ProductCard key={index} product={product} />
-              ))}
+            <div className="flex items-center justify-center flex-wrap gap-5 mt-5">
+              {loadingProducts ? (
+                <p className="text-gray-700 dark:text-white">
+                  Loading products...
+                </p>
+              ) : (
+                product
+                  ?.slice(-8)
+                  .map((product, index) => (
+                    <ProductCard key={index} product={product} />
+                  ))
+              )}
             </div>
           </div>
         </div>
@@ -110,9 +141,15 @@ function Home() {
               </button>
             </div>
             <div className=" flex items-center justify-center flex-wrap gap-5 mt-10">
-              {suppliers?.map((supplier, index) => (
-                <SupplierCard key={index} supplier={supplier} />
-              ))}
+              {loadingSuppliers ? (
+                <p className="text-gray-700 dark:text-white">
+                  Loading suppliers...
+                </p>
+              ) : (
+                suppliers?.map((supplier, index) => (
+                  <SupplierCard key={index} supplier={supplier} />
+                ))
+              )}
             </div>
           </div>
         </div>
