@@ -54,12 +54,6 @@ function FavouriteCard({ product }) {
             Rs. {product.productId.price}
           </span>
         </div>
-
-        <div className="flex justify-end mt-auto">
-          <button className="bg-blue-600 text-white px-4 py-1.5 rounded-md hover:bg-blue-700 transition">
-            Add to Cart
-          </button>
-        </div>
       </div>
     </div>
   );
