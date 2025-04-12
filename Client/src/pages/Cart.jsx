@@ -189,15 +189,12 @@ function Cart() {
 
                 <button
                   onClick={() => {
-                    console.log(cartProducts);
+                    const productIds = cartProducts.map((item) => ({
+                      productId: item.productId._id,
+                      quantity: item.quantity,
+                      price: item.price,
+                    }));
 
-                    const productIds = cartProducts.map((item) => {
-                      return {
-                        productId: item.productId._id,
-                        quantity: item.quantity,
-                        price: item.price,
-                      };
-                    });
                     navigate("/checkout", {
                       state: {
                         productIds,
