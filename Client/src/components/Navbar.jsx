@@ -14,7 +14,6 @@ export default function Navbar({
   setIsLoginOpen,
   setIsRegisterOpen,
 }) {
-
   const {
     user,
     setUser,
@@ -26,8 +25,8 @@ export default function Navbar({
     setSupplierProducts,
     suppliers,
     setSuppliers,
-    showMsg, 
-    setshowMsg
+    showMsg,
+    setshowMsg,
   } = useContext(AppContext);
   const navigate = useNavigate();
   const UserLoggedIn = !!user;
@@ -60,30 +59,40 @@ export default function Navbar({
   };
   const supplierId = localStorage.getItem("userId");
   const handleProfile = () => {
-    getSupplierById(supplierId, setSuppliers, setCheckSuppliers);
     fetchProductsBySupplierId(supplierId, setSupplierProducts);
-    if (checkSuppliers) {
-      navigate(`/supplier-profile/${supplierId}`);
-      setshowMsg(false);
-    } else {
+    if (!supplierId) {
+      console.error("Supplier ID is null or undefined.");
       setshowMsg(true);
       setTimeout(() => {
         setshowMsg(false);
       }, 2000);
+      return;
     }
+
+    getSupplierById(supplierId, setSuppliers, setCheckSuppliers).then(() => {
+      if (checkSuppliers) {
+        navigate(`/supplier-profile/${supplierId}`);
+        setshowMsg(false);
+      } else {
+        setshowMsg(true);
+        setTimeout(() => {
+          setshowMsg(false);
+        }, 2000);
+      }
+    });
   };
 
   const [supplierBtn, setSupplierBtn] = useState(false);
   useEffect(() => {
-    getSupplierById(supplierId, setSuppliers, setCheckSuppliers);
     if (!supplierId) {
       setSupplierBtn(false);
-    } else if (!checkSuppliers) {
-      setSupplierBtn(true);
-    } else {
-      setSupplierBtn(false);
+      return;
     }
-  },[checkSuppliers, setCheckSuppliers, setSuppliers, supplierId]);
+
+    getSupplierById(supplierId, setSuppliers, setCheckSuppliers).then(() => {
+      setSupplierBtn(!checkSuppliers);
+    });
+  }, [checkSuppliers, setCheckSuppliers, setSuppliers, supplierId]);
 
   return (
     <>
