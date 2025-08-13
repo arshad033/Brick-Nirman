@@ -1,4 +1,9 @@
-import { FaFacebookF, FaGooglePlay, FaInstagram, FaYoutube } from "react-icons/fa";
+import {
+  FaFacebookF,
+  FaGooglePlay,
+  FaInstagram,
+  FaYoutube,
+} from "react-icons/fa";
 import { IoIosAppstore, logo } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
@@ -6,8 +11,8 @@ import { AppContext } from "../context/AppContext";
 
 export default function Footer() {
   const navigate = useNavigate();
-  const { checkSuppliers ,setIsSupplierOpen}= useContext(AppContext)
- // Hnadle Quick Links
+  const { checkSuppliers, setIsSupplierOpen } = useContext(AppContext);
+  // Hnadle Quick Links
   const handleQuickLinks = (item) => {
     const routes = {
       Home: "/",
@@ -45,14 +50,22 @@ export default function Footer() {
         <div className="md:w-[40%] text-center md:text-left">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-x-4">
             <div className="w-[8rem] h-[4rem]">
-              <img className="w-full h-full object-cover" src={logo} alt="Brick Nirman" />
+              <img
+                className="w-full h-full object-cover"
+                src={logo}
+                alt="Brick Nirman"
+              />
             </div>
             <h2 className="text-white font-bold text-xl mt-2 md:mt-4">
               BRICK <span className="text-red-500">NIRMAN</span>
             </h2>
           </div>
           <p className="mt-4 text-sm leading-relaxed">
-            Ready Brick, a leading online eCommerce platform in Uttar Pradesh, India, sells high-quality brick products at a competitive market price. This platform is meant for end customers to purchase, as well as for brick manufacturing retailers who would like to sell their quality products using our eCommerce platform.
+            Ready Brick, a leading online eCommerce platform in Uttar Pradesh,
+            India, sells high-quality brick products at a competitive market
+            price. This platform is meant for end customers to purchase, as well
+            as for brick manufacturing retailers who would like to sell their
+            quality products using our eCommerce platform.
           </p>
         </div>
 
@@ -83,15 +96,17 @@ export default function Footer() {
         <div>
           <h3 className="text-white font-semibold">QUICK LINK</h3>
           <ul className="mt-3 space-y-3">
-          {["Home", "Sellers", "Cart", "Favorites", "All Products"].map((item, index) => (
-            <li 
-              onClick={() => handleQuickLinks(item)} 
-              className="cursor-pointer" 
-              key={index}
-            >
-              {item}
-            </li>
-          ))}
+            {["Home", "Sellers", "Cart", "Favorites", "All Products"].map(
+              (item, index) => (
+                <li
+                  onClick={() => handleQuickLinks(item)}
+                  className="cursor-pointer"
+                  key={index}
+                >
+                  {item}
+                </li>
+              )
+            )}
           </ul>
         </div>
 
@@ -101,7 +116,7 @@ export default function Footer() {
           <p className="font-bold mt-3">Address</p>
           <p>Uttar Pradesh</p>
           <p className="font-bold mt-3">Phone</p>
-          <p>+91 73059 40607</p>
+          <p>+91 7007575886</p>
           <p className="font-bold mt-3">Email</p>
           <p>customer@bricknirman.in</p>
         </div>
@@ -110,15 +125,17 @@ export default function Footer() {
         <div>
           <h3 className="text-white font-semibold">MY ACCOUNT</h3>
           <ul className="mt-3 space-y-3">
-          {[ "Order History", "My Wishlist", "Track Order"].map((item, index) => (
-            <li 
-              onClick={() => handleAccountLinks(item)} 
-              className="cursor-pointer" 
-              key={index}
-            >
-              {item}
-            </li>
-          ))}
+            {["Order History", "My Wishlist", "Track Order"].map(
+              (item, index) => (
+                <li
+                  onClick={() => handleAccountLinks(item)}
+                  className="cursor-pointer"
+                  key={index}
+                >
+                  {item}
+                </li>
+              )
+            )}
           </ul>
         </div>
 
@@ -127,7 +144,13 @@ export default function Footer() {
           <h3 className="text-white font-semibold">SELLER ZONE</h3>
           <ul className="mt-3 space-y-3">
             <li>
-              Become A Seller <span onClick={()=>handleApplyBtn()} className={` cursor-pointer text-yellow-500 font-bold`}>Apply Now</span>
+              Become A Seller{" "}
+              <span
+                onClick={() => handleApplyBtn()}
+                className={` cursor-pointer text-yellow-500 font-bold`}
+              >
+                Apply Now
+              </span>
             </li>
           </ul>
         </div>
