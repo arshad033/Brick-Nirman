@@ -116,7 +116,7 @@ export default function Footer() {
           <p className="font-bold mt-3">Address</p>
           <p>Uttar Pradesh</p>
           <p className="font-bold mt-3">Phone</p>
-          <p>+91 7007575886</p>
+          <p>+91 700757588</p>
           <p className="font-bold mt-3">Email</p>
           <p>customer@bricknirman.in</p>
         </div>
